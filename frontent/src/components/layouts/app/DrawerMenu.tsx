@@ -24,9 +24,24 @@ export const menuItems: MenuItem[] = [
     icon: <InboxIcon />,
   },
   {
-    label: "Inbox",
-    path: "/inbox",
+    label: "Sales",
+    path: "/sales",
+    icon: <MailIcon />,
+  },
+  {
+    label: "Category",
+    path: "/category",
     icon: <InboxIcon />,
+  },
+  {
+    label: "Users",
+    path: "/users",
+    icon: <MailIcon />,
+  },
+  {
+    label: "Sign Out",
+    path: "#",
+    icon: <MailIcon />,
   },
 ];
 
