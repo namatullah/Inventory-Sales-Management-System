@@ -37,11 +37,11 @@ const Form = ({
     if (Object.keys(newErrors).length === 0) {
       try {
         if (category) {
-          await updateCategory(category._id, name);
-          toast.success("Category successfully updated");
+          const { data } = await updateCategory(category._id, name);
+          toast.success(data.message);
         } else {
-          await createCategory(name);
-          toast.success("Category successfully created");
+          const { data } = await createCategory(name);
+          toast.success(data.message);
         }
         onClose();
       } catch (error: any) {

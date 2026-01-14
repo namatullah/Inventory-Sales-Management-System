@@ -26,8 +26,8 @@ const Delete = ({
   const handleDelete = async () => {
     try {
       const response = await deleteFunction(id);
-      toast.success(response?.data?.message);
-      close();
+      toast.success(response.data?.message);
+      onClose();
     } catch (error: any) {
       setApiError(
         error.response?.data?.message

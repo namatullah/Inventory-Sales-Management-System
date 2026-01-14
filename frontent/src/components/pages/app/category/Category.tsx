@@ -45,10 +45,12 @@ const Category = () => {
   };
 
   const getCategories = async () => {
+    setApiError("");
     try {
       const { data } = await fetchCategories();
       setCategories(data);
     } catch (error: any) {
+      setCategories([]);
       setApiError(
         error.response?.data?.message
           ? error.response?.data?.message
@@ -59,7 +61,7 @@ const Category = () => {
 
   useEffect(() => {
     getCategories();
-  }, [open]);
+  }, [open, openDelete]);
 
   return (
     <>
@@ -72,7 +74,7 @@ const Category = () => {
           onClose={handleCloseDelete}
           id={category?._id}
           message={"Are you sure to delete category (" + category?.name + ") ?"}
-          deleteFunction = {deleteCategory}
+          deleteFunction={deleteCategory}
         />
       )}
       <TableContainer component={Paper}>
@@ -80,7 +82,6 @@ const Category = () => {
           <TableHead>
             <TableRow>
               <TableCell colSpan={2}>
-                {apiError && <ApiError apiError={apiError} />}
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <h3>Categories</h3>{" "}
                   <Button
@@ -115,6 +116,13 @@ const Category = () => {
                 </TableCell>
               </TableRow>
             ))}
+            {apiError && (
+              <TableRow>
+                <TableCell colSpan={2}>
+                  <ApiError apiError={apiError} />
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

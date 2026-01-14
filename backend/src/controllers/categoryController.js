@@ -17,7 +17,9 @@ const createCategory = async (req, res) => {
     existCategory &&
       res.status(400).json({ message: "Category already exists" });
     const category = await Category.create({ name });
-    res.status(200).json(category);
+    res
+      .status(200)
+      .json({ message: "Category created successfully" }, category);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -29,19 +31,20 @@ const updateCategory = async (req, res) => {
     const category = await Category.findById(req.params.id);
     category.name = name;
     const updatedCategory = await category.save();
-    res.status(200).json(updateCategory);
+    res
+      .status(200)
+      .json({ message: "Category updated successfully" }, updateCategory);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
 const deleteCategory = async (req, res) => {
-  console.log(req.params)
   try {
     const category = await Category.findById(req.params.id);
     !category && res.status(400).json({ message: "Category not found" });
     await category.deleteOne();
-    res.status(200).res({ message: "Category deleted successfully" });
+    res.status(200).json({ message: "Category deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
