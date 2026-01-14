@@ -1,10 +1,29 @@
 import Category from "../models/Category.js";
 
 const fetchCategories = async (req, res) => {
+  const { limit, page } = req.query;
+  try {
+    const limitNum = parseInt(limit, 10);
+    const pageNum = parseInt(page, 10);
+    const skip = (pageNum - 1) * limitNum;
+
+    const categories = await Category.aggregate([
+      { $skip: skip },
+      { $limit: limitNum },
+    ]);
+    const total = await Category.countDocuments();
+    categories.length === 0 &&
+      res.status(400).json({ message: "No category found" });
+    res.status(200).json({ data: categories, total });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+const getCategories = async (req, res) => {
   try {
     const categories = await Category.find();
     categories.length === 0 &&
-      res.status(400).json({ message: "No categories created" });
+      res.status(400).json({ message: "No category found" });
     res.status(200).json(categories);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
@@ -50,4 +69,10 @@ const deleteCategory = async (req, res) => {
   }
 };
 
-export { fetchCategories, createCategory, updateCategory, deleteCategory };
+export {
+  fetchCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+  getCategories,
+};

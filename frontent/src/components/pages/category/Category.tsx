@@ -6,7 +6,9 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
+  Typography,
 } from "@mui/material";
 import {
   AddOutlined,
@@ -15,15 +17,38 @@ import {
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import Form from "./Form";
-import type { CategoryType } from "../../../../types";
-import { deleteCategory, fetchCategories } from "../../../../lib/category";
-import ApiError from "../../../common/ApiError";
-import Delete from "../../../common/Delete";
+import type { CategoryType } from "../../../types";
+import { deleteCategory, fetchCategories } from "../../../lib/category";
+import ApiError from "../../common/ApiError";
+import Delete from "../../common/Delete";
 const Category = () => {
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [category, setCategory] = useState<CategoryType | null>(null);
   const [apiError, setApiError] = useState<string>("");
+
+  const [paginantion, setPagination] = useState({
+    page: 0,
+    rowsPerPage: 5,
+  });
+  const [total, setTotal] = useState(0);
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPagination({ ...paginantion, page: newPage });
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setPagination({
+      ...paginantion,
+      rowsPerPage: parseInt(event.target.value),
+      page: 0,
+    });
+  };
 
   const handleOpenClose = () => {
     setCategory(null);
@@ -47,8 +72,9 @@ const Category = () => {
   const getCategories = async () => {
     setApiError("");
     try {
-      const { data } = await fetchCategories();
-      setCategories(data);
+      const { data } = await fetchCategories(paginantion);
+      setCategories(data.data);
+      setTotal(data.total);
     } catch (error: any) {
       setCategories([]);
       setApiError(
@@ -61,7 +87,9 @@ const Category = () => {
 
   useEffect(() => {
     getCategories();
-  }, [open, openDelete]);
+  }, [open, openDelete, paginantion.page, paginantion.rowsPerPage]);
+
+  // paginantion
 
   return (
     <>
@@ -82,12 +110,21 @@ const Category = () => {
           <TableHead>
             <TableRow>
               <TableCell colSpan={2}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <h3>Categories</h3>{" "}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography sx={{ fontSize: "20px" }}>Categories</Typography>
                   <Button
-                    startIcon={<AddOutlined />}
+                    variant="outlined"
                     onClick={handleOpenClose}
-                  />
+                    startIcon={<AddOutlined />}
+                  >
+                    <span style={{ paddingTop: "inherit" }}>Add Category</span>
+                  </Button>
                 </div>
               </TableCell>
             </TableRow>
@@ -123,6 +160,19 @@ const Category = () => {
                 </TableCell>
               </TableRow>
             )}
+            <TableRow>
+              <TableCell colSpan={2}>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10]}
+                  component="div"
+                  count={total}
+                  page={paginantion.page}
+                  onPageChange={handleChangePage}
+                  rowsPerPage={paginantion.rowsPerPage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>

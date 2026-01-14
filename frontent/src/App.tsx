@@ -1,13 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Product from "./components/pages/app/Product";
+import Product from "./components/pages/product/Product";
 import AppLayout from "./components/layouts/AppLayout";
 import AuthLayout from "./components/layouts/AuthLayout";
-import SignIn from "./components/pages/auth/SignIn";
-import SignUp from "./components/pages/auth/SignUp";
-import Dashboard from "./components/pages/app/Dashboard";
-import Sales from "./components/pages/app/Sales";
-import Category from "./components/pages/app/category/Category";
-import Users from "./components/pages/app/Users";
+import SignIn from "./components/auth/SignIn";
+import SignUp from "./components/auth/SignUp";
+import Dashboard from "./components/pages/Dashboard";
+import Sales from "./components/pages/Sales";
+import Category from "./components/pages/category/Category";
+import Users from "./components/pages/Users";
 import { Toaster } from "react-hot-toast";
 
 export default function App() {
