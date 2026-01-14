@@ -1,19 +1,28 @@
 import { CloseOutlined } from "@mui/icons-material";
 import {
-  Alert,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
-import { createCategory } from "../../../../lib/category";
+import { useEffect, useState } from "react";
+import { createCategory, updateCategory } from "../../../../lib/category";
+import toast from "react-hot-toast";
+import type { CategoryType } from "../../../../types";
+import ApiError from "../../../common/ApiError";
 
-const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+const Form = ({
+  open,
+  onClose,
+  category,
+}: {
+  open: boolean;
+  onClose: () => void;
+  category: CategoryType | any;
+}) => {
   const [apiError, setApiError] = useState<string>("");
   const [name, setName] = useState("");
   const [errors, setErrors] = useState<{
@@ -27,7 +36,13 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       try {
-        await createCategory(name);
+        if (category) {
+          await updateCategory(category._id, name);
+          toast.success("Category successfully updated");
+        } else {
+          await createCategory(name);
+          toast.success("Category successfully created");
+        }
         onClose();
       } catch (error: any) {
         setApiError(
@@ -38,6 +53,10 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
       }
     }
   };
+  useEffect(() => {
+    if (!category) return;
+    setName(category.name);
+  }, []);
 
   return (
     <>
@@ -45,7 +64,9 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
         <form onSubmit={handleSubmit}>
           <DialogTitle>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <Typography>New Category</Typography>
+              <Typography>
+                {category ? "Update Category" : "New Category"}
+              </Typography>
               <CloseOutlined onClick={onClose} color="error" />
             </div>
           </DialogTitle>
@@ -61,15 +82,12 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
               helperText={errors.name}
               onChange={({ target }) => setName(target.value)}
             />
+            {apiError && <ApiError apiError={apiError} />}
           </DialogContent>
-          {apiError && (
-            <Grid marginTop={2}>
-              <Alert severity="error">{apiError}</Alert>
-            </Grid>
-          )}
+
           <DialogActions style={{ padding: "0 25px 20px 20px" }}>
             <Button variant="contained" color="primary" type="submit">
-              Add
+              {category ? "update" : "add"}
             </Button>
           </DialogActions>
         </form>
