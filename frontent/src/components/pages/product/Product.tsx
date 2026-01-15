@@ -90,6 +90,7 @@ const Product = () => {
   };
 
   useEffect(() => {
+    if (open || openDelete) return;
     getProducts();
   }, [open, openDelete, paginantion.page, paginantion.rowsPerPage]);
 

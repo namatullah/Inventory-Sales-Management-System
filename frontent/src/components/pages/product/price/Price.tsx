@@ -1,3 +1,4 @@
+import moment from "moment";
 import { AddOutlined, CloseOutlined, DeleteForever } from "@mui/icons-material";
 import type { ProductType } from "../../../../types";
 import {
@@ -12,8 +13,10 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Form from "./Form";
+import { fetchPrices } from "../../../../lib/price";
+import ApiError from "../../../common/ApiError";
 
 const Price = ({
   pricePreview,
@@ -25,12 +28,30 @@ const Price = ({
   product: ProductType | any;
 }) => {
   const [open, setOpen] = useState(false);
+  const [prices, setPrices] = useState([]);
+  const [apiError, setApiError] = useState<string>("");
   const handleOpenClose = () => {
     setOpen(!open);
   };
   const handleClose = () => {
     setPricePreview(!pricePreview);
   };
+  const getPrices = async () => {
+    try {
+      const { data } = await fetchPrices(product._id);
+      setPrices(data);
+    } catch (error: any) {
+      setApiError(
+        error.response?.data?.message
+          ? error.response?.data?.message
+          : "Fetching categories faild"
+      );
+    }
+  };
+  useEffect(() => {
+    if (open) return;
+    getPrices();
+  }, [open]);
   return (
     <>
       {open && (
@@ -48,8 +69,8 @@ const Price = ({
           <CloseOutlined onClick={handleClose} color="error" />
         </DialogTitle>
         <Divider />
-
         <DialogContent>
+          {apiError && <ApiError apiError={apiError} />}
           <List>
             <Box
               sx={{
@@ -65,35 +86,32 @@ const Price = ({
               </Typography>
               <AddOutlined color="primary" onClick={handleOpenClose} />
             </Box>
-            <Divider />
-            <ListItem
-              secondaryAction={
-                <IconButton edge="end" aria-label="delete">
-                  <DeleteForever />
-                </IconButton>
-              }
-            >
-              <ListItemText primary="Price 1" secondary="date 1" />
-            </ListItem>
-            <Divider />
-            <ListItem
-              secondaryAction={
-                <IconButton edge="end" aria-label="delete">
-                  <DeleteForever color="error" />
-                </IconButton>
-              }
-            >
-              <ListItemText primary="Price 2" secondary="date 2" />
-            </ListItem>
-            <ListItem
-              secondaryAction={
-                <IconButton edge="end" aria-label="delete">
-                  <DeleteForever />
-                </IconButton>
-              }
-            >
-              <ListItemText primary="Price 3" secondary="date 3" />
-            </ListItem>
+            {prices.length > 0 ? (
+              prices.map((price: any) => (
+                <Fragment key={price._id}>
+                  <Divider />
+                  <ListItem
+                    secondaryAction={
+                      <IconButton edge="end" aria-label="delete">
+                        <DeleteForever color="error" />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemText
+                      primary={price?.price + " Af"}
+                      secondary={moment(price.createdAt).format(
+                        "MMMM Do YYYY, h:mm:ss a"
+                      )}
+                    />
+                  </ListItem>
+                </Fragment>
+              ))
+            ) : (
+              <>
+                <Divider />
+                <ListItem>* Please add price</ListItem>
+              </>
+            )}
           </List>
         </DialogContent>
       </Dialog>

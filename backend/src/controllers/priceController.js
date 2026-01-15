@@ -1,8 +1,11 @@
+import mongoose from "mongoose";
+import Product from "../models/Product.js";
+import Price from "../models/Price.js";
+
 const getPrices = async (req, res) => {
+  const { productId } = req.query;
   try {
-    const product = await Product.findById({ _id: req.params.id }).populate(
-      "category"
-    );
+    const product = await Price.find({ product: productId }).sort({createdAt:-1});
     !product && res.status(400).json({ message: "Product is not found" });
     res.status(200).json(product);
   } catch (error) {
@@ -11,17 +14,16 @@ const getPrices = async (req, res) => {
 };
 
 const createPrice = async (req, res) => {
-  const { name, sku, category } = req.body;
+  const { price, productId } = req.body;
   try {
-    existProduct &&
-      res.status(400).json({ message: "This product is already available" });
-    await Product.create({
-      name,
-      sku,
-      category: new mongoose.Types.ObjectId(category),
+    await Price.create({
+      price,
+      product: new mongoose.Types.ObjectId(productId),
     });
-    res.status(200).json({ message: "Product created successfully" });
+    res.status(200).json({ message: "Price created successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+export { createPrice, getPrices };

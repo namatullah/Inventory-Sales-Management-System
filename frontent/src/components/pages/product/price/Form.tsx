@@ -11,6 +11,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import ApiError from "../../../common/ApiError";
 import { CloseOutlined } from "@mui/icons-material";
+import { createPrice } from "../../../../lib/price";
 
 const Form = ({
   open,
@@ -28,14 +29,14 @@ const Form = ({
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      //   const { data } = await createProduct(productId, {price});
-      //   toast.success(data.message);
+      const { data } = await createPrice({ productId, price });
+      toast.success(data.message);
       onClose();
     } catch (error: any) {
       setApiError(
         error.response?.data?.message
           ? error.response?.data?.message
-          : "Creating Product faild"
+          : "Creating price faild"
       );
     }
   };
