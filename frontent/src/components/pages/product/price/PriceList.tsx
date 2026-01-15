@@ -13,11 +13,13 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import Form from "./Form";
-import { deletePrice, fetchPrices } from "../../../../lib/price";
+import { deletePrice } from "../../../../lib/price";
 import ApiError from "../../../common/ApiError";
 import DeleteData from "../../../common/DeleteData";
+import { PricesContext, PricesDispatchContext } from "./PriceContexts";
+import toast from "react-hot-toast";
 
 const PriceList = ({
   pricePreview,
@@ -28,35 +30,19 @@ const PriceList = ({
   setPricePreview: (preventPreview: boolean) => void;
   product: ProductType | any;
 }) => {
+  const prices = useContext(PricesContext);
+  const dispatch = useContext(PricesDispatchContext);
   const [open, setOpen] = useState(false);
-  const [prices, setPrices] = useState([]);
   const [price, setPrice] = useState<any>(null);
+  const [apiError, setApiError] = useState<string>("");
   const [openDelete, setOpenDelete] = useState(false);
 
-  const [apiError, setApiError] = useState<string>("");
   const handleOpenClose = () => {
     setOpen(!open);
   };
   const handleClose = () => {
     setPricePreview(!pricePreview);
   };
-  const getPrices = async () => {
-    console.log("call effect");
-    try {
-      const { data } = await fetchPrices(product._id);
-      setPrices(data);
-    } catch (error: any) {
-      setApiError(
-        error.response?.data?.message
-          ? error.response?.data?.message
-          : "Fetching categories faild"
-      );
-    }
-  };
-  useEffect(() => {
-    if (open || openDelete) return;
-    getPrices();
-  }, [open, openDelete]);
 
   const handleDelete = (p: any) => {
     setPrice(p);
@@ -66,7 +52,19 @@ const PriceList = ({
     setPrice(null);
     setOpenDelete(false);
   };
-
+  const onDelete = async () => {
+    try {
+      const { data } = await deletePrice(price._id);
+      toast.success(data?.message);
+      dispatch({ type: "delete", id: price._id });
+    } catch (error: any) {
+      setApiError(
+        error.response?.data?.message
+          ? error.response?.data?.message
+          : "Deletion failed"
+      );
+    }
+  };
   return (
     <>
       {open && (
@@ -76,9 +74,8 @@ const PriceList = ({
         <DeleteData
           open={openDelete}
           onClose={handleCloseDelete}
-          id={price?._id}
           message={"Are you sure to delete price (" + price?.price + ") ?"}
-          deleteFunction={deletePrice}
+          deleteFunction={onDelete}
         />
       )}
       <Dialog maxWidth="xs" open={pricePreview} onClose={handleClose}>

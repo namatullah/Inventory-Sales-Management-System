@@ -18,11 +18,13 @@ const getPrices = async (req, res) => {
 const createPrice = async (req, res) => {
   const { price, productId } = req.body;
   try {
-    await Price.create({
+    const createdPrice = await Price.create({
       price,
       product: new mongoose.Types.ObjectId(productId),
     });
-    res.status(200).json({ message: "Price created successfully" });
+    res
+      .status(200)
+      .json({ message: "Price created successfully", data: createdPrice });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -36,4 +38,4 @@ const deletePrice = async (req, res) => {
   }
 };
 
-export { createPrice, getPrices , deletePrice};
+export { createPrice, getPrices, deletePrice };

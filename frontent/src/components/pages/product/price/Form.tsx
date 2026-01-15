@@ -7,11 +7,12 @@ import {
   Divider,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import ApiError from "../../../common/ApiError";
 import { CloseOutlined } from "@mui/icons-material";
 import { createPrice } from "../../../../lib/price";
+import { PricesDispatchContext } from "./PriceContexts";
 
 const Form = ({
   open,
@@ -22,6 +23,7 @@ const Form = ({
   onClose: () => void;
   productId: string;
 }) => {
+  const dispatch = useContext(PricesDispatchContext);
   const [apiError, setApiError] = useState<string>("");
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(true);
@@ -31,6 +33,7 @@ const Form = ({
     try {
       const { data } = await createPrice({ productId, price });
       toast.success(data.message);
+      dispatch({ type: "create", value: data.data });
       onClose();
     } catch (error: any) {
       setApiError(

@@ -2,11 +2,14 @@ import { useState } from "react";
 import type { ProductType } from "../../../../types";
 import { PreviewOutlined } from "@mui/icons-material";
 import PriceList from "./PriceList";
+import { PriceProvider } from "./PriceContexts";
+import LatestPrice from "./LatestPrice";
 
 const Price = ({ product }: { product: ProductType | any }) => {
   const [pricePreview, setPricePreview] = useState(false);
+
   return (
-    <>
+    <PriceProvider productId={product._id}>
       {pricePreview && (
         <PriceList
           pricePreview={pricePreview}
@@ -27,9 +30,9 @@ const Price = ({ product }: { product: ProductType | any }) => {
             setPricePreview(true);
           }}
         />
-        <span>303 Af</span>
+        <LatestPrice />
       </span>
-    </>
+    </PriceProvider>
   );
 };
 
