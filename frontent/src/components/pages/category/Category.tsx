@@ -21,6 +21,7 @@ import type { CategoryType } from "../../../types";
 import { deleteCategory, fetchCategories } from "../../../lib/category";
 import ApiError from "../../common/ApiError";
 import DeleteData from "../../common/DeleteData";
+import toast from "react-hot-toast";
 const Category = () => {
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -89,7 +90,18 @@ const Category = () => {
     getCategories();
   }, [open, openDelete, paginantion.page, paginantion.rowsPerPage]);
 
-  // paginantion
+  const onDelete = async () => {
+    try {
+      const { data } = await deleteCategory(category?._id);
+      toast.success(data?.message);
+    } catch (error: any) {
+      setApiError(
+        error.response?.data?.message
+          ? error.response?.data?.message
+          : "Deletion failed"
+      );
+    }
+  };
 
   return (
     <>
@@ -100,9 +112,8 @@ const Category = () => {
         <DeleteData
           open={openDelete}
           onClose={handleCloseDelete}
-          id={category?._id}
           message={"Are you sure to delete category (" + category?.name + ") ?"}
-          deleteFunction={deleteCategory}
+          deleteFunction={onDelete}
         />
       )}
       <TableContainer component={Paper}>

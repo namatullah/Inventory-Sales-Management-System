@@ -23,6 +23,7 @@ import type { ProductType } from "../../../types";
 import Form from "./Form";
 import DeleteData from "../../common/DeleteData";
 import Price from "./price/Price";
+import toast from "react-hot-toast";
 const Product = () => {
   const [open, setOpen] = useState(false);
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -92,6 +93,18 @@ const Product = () => {
     getProducts();
   }, [open, openDelete, paginantion.page, paginantion.rowsPerPage]);
 
+  const onDelete = async () => {
+    try {
+      const { data } = await deleteProduct(product?._id);
+      toast.success(data?.message);
+    } catch (error: any) {
+      setApiError(
+        error.response?.data?.message
+          ? error.response?.data?.message
+          : "Deletion failed"
+      );
+    }
+  };
   // paginantion
   return (
     <>
@@ -100,9 +113,8 @@ const Product = () => {
         <DeleteData
           open={openDelete}
           onClose={handleCloseDelete}
-          id={product?._id}
           message={"Are you sure to delete product (" + product?.name + ") ?"}
-          deleteFunction={deleteProduct}
+          deleteFunction={onDelete}
         />
       )}
       <TableContainer component={Paper}>

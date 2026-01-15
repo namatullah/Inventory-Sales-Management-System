@@ -14,7 +14,7 @@ const LatestPrice = () => {
             : latest;
         })
       : null;
-  return <span>{latest?.price}</span>;
+  return <span>{latest?.price}/. (Af)</span>;
 };
 
 export default LatestPrice;
