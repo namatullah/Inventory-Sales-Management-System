@@ -1,9 +1,10 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import PriceReducer from "./PriceReducer";
-import { fetchPrices } from "../../../../lib/price";
+import { fetchPrices } from "../../../../../lib/price";
+import type { PriceType } from "../../../../../types";
 
-export const PricesContext = createContext<any>(null);
-export const PricesDispatchContext = createContext<any>(null);
+const PricesContext = createContext<PriceType[]>([]);
+const PricesDispatchContext = createContext<any>(null);
 
 export const PriceProvider = ({
   productId,
@@ -35,3 +36,6 @@ export const PriceProvider = ({
     </PricesContext>
   );
 };
+
+export const usePricesContext = () => useContext(PricesContext);
+export const usePricesDispatchContext = () => useContext(PricesDispatchContext);

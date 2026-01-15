@@ -1,6 +1,6 @@
 import moment from "moment";
 import { AddOutlined, CloseOutlined, DeleteForever } from "@mui/icons-material";
-import type { ProductType } from "../../../../types";
+import type { PriceType, ProductType } from "../../../../types";
 import {
   Box,
   Dialog,
@@ -13,12 +13,15 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useState } from "react";
 import Form from "./Form";
 import { deletePrice } from "../../../../lib/price";
 import ApiError from "../../../common/ApiError";
 import DeleteData from "../../../common/DeleteData";
-import { PricesContext, PricesDispatchContext } from "./PriceContexts";
+import {
+  usePricesContext,
+  usePricesDispatchContext,
+} from "./contextReducer/PriceContexts";
 import toast from "react-hot-toast";
 
 const PriceList = ({
@@ -30,8 +33,8 @@ const PriceList = ({
   setPricePreview: (preventPreview: boolean) => void;
   product: ProductType | any;
 }) => {
-  const prices = useContext(PricesContext);
-  const dispatch = useContext(PricesDispatchContext);
+  const prices = usePricesContext();
+  const dispatch = usePricesDispatchContext();
   const [open, setOpen] = useState(false);
   const [price, setPrice] = useState<any>(null);
   const [apiError, setApiError] = useState<string>("");
@@ -108,7 +111,7 @@ const PriceList = ({
               <AddOutlined color="primary" onClick={handleOpenClose} />
             </Box>
             {prices.length > 0 ? (
-              prices.map((price: any) => (
+              prices.map((price: PriceType) => (
                 <Fragment key={price._id}>
                   <Divider />
                   <ListItem

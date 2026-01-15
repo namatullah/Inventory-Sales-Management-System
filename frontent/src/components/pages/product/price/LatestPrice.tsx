@@ -1,9 +1,10 @@
-import { useContext } from "react";
-import { PricesContext } from "./PriceContexts";
+import {
+  usePricesContext,
+} from "./contextReducer/PriceContexts";
 import type { PriceType } from "../../../../types";
 
 const LatestPrice = () => {
-  const prices = useContext(PricesContext);
+  const prices = usePricesContext();
 
   const latest =
     prices?.length > 0

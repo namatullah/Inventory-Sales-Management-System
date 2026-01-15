@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { ProductType } from "../../../../types";
 import { PreviewOutlined } from "@mui/icons-material";
 import PriceList from "./PriceList";
-import { PriceProvider } from "./PriceContexts";
+import { PriceProvider } from "./contextReducer/PriceContexts";
 import LatestPrice from "./LatestPrice";
 
 const Price = ({ product }: { product: ProductType | any }) => {
