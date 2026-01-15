@@ -7,6 +7,7 @@ const Stock = ({ product }: { product: ProductType }) => {
 
   return (
     <>
+      {open && <></>}
       {product.stock}
       <Button onClick={() => setOpen(true)} sx={{ fontSize: "8px" }}>
         Add in Stock

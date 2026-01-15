@@ -3,11 +3,11 @@ export interface CategoryType {
   name: string;
 }
 
+
+
 export interface ProductType {
   _id: string;
   name: string;
   sku: string;
-  price: number;
-  stock: number;
   category?: CategoryType;
 }

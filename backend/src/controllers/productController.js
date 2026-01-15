@@ -33,7 +33,7 @@ const getProductById = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-  const { name, sku, price, stock, category } = req.body;
+  const { name, sku, category } = req.body;
   try {
     const existProduct = await Product.findOne({ sku: sku });
     console.log("Pro:", existProduct);
@@ -42,8 +42,6 @@ const createProduct = async (req, res) => {
     await Product.create({
       name,
       sku,
-      stock,
-      price,
       category: new mongoose.Types.ObjectId(category),
     });
     res.status(200).json({ message: "Product created successfully" });
@@ -52,13 +50,11 @@ const createProduct = async (req, res) => {
   }
 };
 const updateProduct = async (req, res) => {
-  const { name, sku, price, stock, category } = req.body;
+  const { name, sku, category } = req.body;
   try {
     const product = await Product.findById({ _id: req.params.id });
     product.name = name;
     product.sku = sku;
-    product.price = price;
-    product.stock = stock;
     (product.category = new mongoose.Types.ObjectId(category)), product.save();
     res.status(200).json({ message: "Product updated successfully" }, product);
   } catch (error) {

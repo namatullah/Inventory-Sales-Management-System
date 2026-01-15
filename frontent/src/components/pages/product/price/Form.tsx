@@ -30,11 +30,15 @@ const Form = ({
     name: "",
     sku: "",
     category: "",
+    price: "",
+    stock: "",
   });
   const [errors, setErrors] = useState<{
     name?: string;
     sku?: string;
     category?: string;
+    price?: string;
+    stock?: string;
   }>({});
 
   const handleSubmit = async (e: any) => {
@@ -43,6 +47,8 @@ const Form = ({
     if (!formData.name.trim()) newErrors.name = "Product Name is required";
     if (!formData.sku.trim()) newErrors.sku = "Product SKU is required";
     if (!formData.category) newErrors.category = "Category is required";
+    if (!formData.price) newErrors.price = "Product Price is required";
+    if (!formData.stock) newErrors.stock = "Quantity in stock required";
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       try {
@@ -84,6 +90,8 @@ const Form = ({
       name: product.name,
       sku: product.sku,
       category: product.category._id,
+      price: product.price,
+      stock: product.stock,
     });
   }, []);
 
@@ -147,6 +155,48 @@ const Form = ({
                 </MenuItem>
               ))}
             </TextField>
+            <TextField
+              type="text"
+              margin="dense"
+              name="price"
+              label="Price"
+              variant="outlined"
+              fullWidth
+              value={formData.price}
+              error={!!errors.price}
+              helperText={errors.price}
+              onChange={({ target }) => {
+                const value = target.value;
+                if (/^\d*$/.test(value)) {
+                  setFormData({ ...formData, price: value });
+                }
+              }}
+              inputProps={{
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+              }}
+            />
+            <TextField
+              type="text"
+              margin="dense"
+              name="stock"
+              label="stock"
+              variant="outlined"
+              fullWidth
+              value={formData.stock}
+              error={!!errors.stock}
+              helperText={errors.stock}
+              onChange={({ target }) => {
+                const value = target.value;
+                if (/^\d*$/.test(value)) {
+                  setFormData({ ...formData, stock: value });
+                }
+              }}
+              inputProps={{
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+              }}
+            />
             {apiError && <ApiError apiError={apiError} />}
           </DialogContent>
 

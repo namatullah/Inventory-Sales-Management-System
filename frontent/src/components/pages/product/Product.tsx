@@ -137,13 +137,13 @@ const Product = () => {
                 Category
               </TableCell>
               <TableCell sx={{ fontWeight: "bold", color: "GrayText" }}>
+                Actions
+              </TableCell>
+              <TableCell sx={{ fontWeight: "bold", color: "GrayText" }}>
                 Price
               </TableCell>
               <TableCell sx={{ fontWeight: "bold", color: "GrayText" }}>
                 Stock
-              </TableCell>
-              <TableCell sx={{ fontWeight: "bold", color: "GrayText" }}>
-                Actions
               </TableCell>
             </TableRow>
           </TableHead>
@@ -153,10 +153,6 @@ const Product = () => {
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.sku}</TableCell>
                 <TableCell>{product?.category?.name}</TableCell>
-                <TableCell>{product.price}</TableCell>
-                <TableCell>
-                  <Stock product={product} />
-                </TableCell>
                 <TableCell>
                   <EditNoteOutlined
                     color="primary"
@@ -166,6 +162,10 @@ const Product = () => {
                     color="error"
                     onClick={() => handleDelete(product)}
                   />
+                </TableCell>
+                <TableCell>{product.price}</TableCell>
+                <TableCell>
+                  <Stock product={product} />
                 </TableCell>
               </TableRow>
             ))}
