@@ -36,7 +36,6 @@ const createProduct = async (req, res) => {
   const { name, sku, category } = req.body;
   try {
     const existProduct = await Product.findOne({ sku: sku });
-    console.log("Pro:", existProduct);
     existProduct &&
       res.status(400).json({ message: "This product is already available" });
     await Product.create({
