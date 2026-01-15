@@ -5,7 +5,9 @@ import Price from "../models/Price.js";
 const getPrices = async (req, res) => {
   const { productId } = req.query;
   try {
-    const product = await Price.find({ product: productId }).sort({createdAt:-1});
+    const product = await Price.find({ product: productId }).sort({
+      createdAt: -1,
+    });
     !product && res.status(400).json({ message: "Product is not found" });
     res.status(200).json(product);
   } catch (error) {
@@ -25,5 +27,13 @@ const createPrice = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+const deletePrice = async (req, res) => {
+  try {
+    await Price.findByIdAndDelete({ _id: req.params.id });
+    res.status(200).json({ message: "Price deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
-export { createPrice, getPrices };
+export { createPrice, getPrices , deletePrice};

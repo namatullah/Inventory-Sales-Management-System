@@ -9,7 +9,7 @@ import { useState } from "react";
 import ApiError from "./ApiError";
 import toast from "react-hot-toast";
 
-const Delete = ({
+const DeleteData = ({
   open,
   onClose,
   id,
@@ -25,14 +25,14 @@ const Delete = ({
   const [apiError, setApiError] = useState<string>("");
   const handleDelete = async () => {
     try {
-      const response = await deleteFunction(id);
-      toast.success(response.data?.message);
+      const { data } = await deleteFunction(id);
+      toast.success(data?.message);
       onClose();
     } catch (error: any) {
       setApiError(
         error.response?.data?.message
           ? error.response?.data?.message
-          : "Add member faild"
+          : "Deletion failed"
       );
     }
   };
@@ -55,4 +55,4 @@ const Delete = ({
   );
 };
 
-export default Delete;
+export default DeleteData;

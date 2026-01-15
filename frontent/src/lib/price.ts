@@ -7,7 +7,4 @@ export const fetchPrices = (productId: string) =>
       productId,
     },
   });
-
-// export const updateProduct = (id: string, data: ProductType | any) =>
-//   api.put("/products/" + id, data);
-// export const deleteProduct = (id: string) => api.delete("/products/" + id);
+export const deletePrice = (id: string) => api.delete("/prices/" + id);

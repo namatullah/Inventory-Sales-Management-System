@@ -18,18 +18,16 @@ import {
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import ApiError from "../../common/ApiError";
-import Delete from "../../common/Delete";
 import { deleteProduct, fetchProducts } from "../../../lib/product";
 import type { ProductType } from "../../../types";
 import Form from "./Form";
+import DeleteData from "../../common/DeleteData";
 import Price from "./price/Price";
 const Product = () => {
   const [open, setOpen] = useState(false);
   const [products, setProducts] = useState<ProductType[]>([]);
   const [product, setProduct] = useState<ProductType | null>(null);
   const [apiError, setApiError] = useState<string>("");
-  const [pricePreview, setPricePreview] = useState(false);
-  const [stockPreview, setStockPreview] = useState(false);
 
   const [paginantion, setPagination] = useState({
     page: 0,
@@ -99,19 +97,12 @@ const Product = () => {
     <>
       {open && <Form open={open} onClose={handleOpenClose} product={product} />}
       {openDelete && (
-        <Delete
+        <DeleteData
           open={openDelete}
           onClose={handleCloseDelete}
           id={product?._id}
           message={"Are you sure to delete product (" + product?.name + ") ?"}
           deleteFunction={deleteProduct}
-        />
-      )}
-      {pricePreview && (
-        <Price
-          pricePreview={pricePreview}
-          setPricePreview={setPricePreview}
-          product={product}
         />
       )}
       <TableContainer component={Paper}>
@@ -175,22 +166,7 @@ const Product = () => {
                   />
                 </TableCell>
                 <TableCell>
-                  <span
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 6,
-                    }}
-                  >
-                    <PreviewOutlined
-                      color="primary"
-                      onClick={() => {
-                        setPricePreview(true);
-                        setProduct(product);
-                      }}
-                    />
-                    <span>303 Af</span>
-                  </span>
+                  <Price product={product} />
                 </TableCell>
                 <TableCell>
                   <span
@@ -201,7 +177,7 @@ const Product = () => {
                     }}
                   >
                     <PreviewOutlined color="primary" />
-                    <span>303 Af</span>
+                    <span>11 Af</span>
                   </span>
                 </TableCell>
               </TableRow>

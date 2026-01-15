@@ -20,7 +20,7 @@ import Form from "./Form";
 import type { CategoryType } from "../../../types";
 import { deleteCategory, fetchCategories } from "../../../lib/category";
 import ApiError from "../../common/ApiError";
-import Delete from "../../common/Delete";
+import DeleteData from "../../common/DeleteData";
 const Category = () => {
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -97,7 +97,7 @@ const Category = () => {
         <Form open={open} onClose={handleOpenClose} category={category} />
       )}
       {openDelete && (
-        <Delete
+        <DeleteData
           open={openDelete}
           onClose={handleCloseDelete}
           id={category?._id}
