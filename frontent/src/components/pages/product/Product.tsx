@@ -14,7 +14,6 @@ import {
   AddOutlined,
   DeleteForever,
   EditNoteOutlined,
-  PreviewOutlined,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import ApiError from "../../common/ApiError";

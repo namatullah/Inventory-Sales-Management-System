@@ -1,28 +1,26 @@
 import { LockOutline, Visibility, VisibilityOff } from "@mui/icons-material";
 import {
-  Alert,
   Avatar,
   Button,
   Container,
   Grid,
   IconButton,
   InputAdornment,
-  Link,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { signup } from "../../lib/auth";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import ApiError from "../common/ApiError";
 
 const SignUp = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
-  const [forgotPassword, setForgotPassword] = useState(false);
+  const [apiError, setApiError] = useState<string>("");
 
   // Form data
   const [formData, setFormtData] = useState({
@@ -48,10 +46,6 @@ const SignUp = () => {
   const switchMode = () => {
     setShowPassword(false);
   };
-
-  const [submitError, setSubmitError] = useState<string | null | undefined>(
-    null
-  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,11 +76,11 @@ const SignUp = () => {
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       const { confirmPassword, ...safeData } = formData;
-      const response = register(safeData);
+      const response = await register(safeData);
       if (response.success) {
         navigate("/");
       } else {
-        console.log(response.error);
+        setApiError(response.error ?? "Server Error");
       }
     }
   };
@@ -195,14 +189,8 @@ const SignUp = () => {
           >
             Sign Up
           </Button>
-          {submitError ? (
-            <>
-              <Grid marginTop={2}>
-                <Alert severity="error">{submitError}</Alert>
-              </Grid>
-
-              {forgotPassword && <Link>Forgot your password?</Link>}
-            </>
+          {apiError ? (
+            <ApiError apiError={apiError} />
           ) : (
             <Grid>
               <Button onClick={() => navigate("/signin")}>

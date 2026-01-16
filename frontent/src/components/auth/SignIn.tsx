@@ -1,28 +1,26 @@
 import { LockOutline, Visibility, VisibilityOff } from "@mui/icons-material";
 import {
-  Alert,
   Avatar,
   Button,
   Container,
   Grid,
   IconButton,
   InputAdornment,
-  Link,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { signin } from "../../lib/auth";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import ApiError from "../common/ApiError";
 
 const SignIn = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
-  const [forgotPassword, setForgotPassword] = useState(false);
+  const [apiError, setApiError] = useState<string>("");
 
   // Form data
   const [formData, setFormtData] = useState({
@@ -43,10 +41,6 @@ const SignIn = () => {
   const switchMode = () => {
     setShowPassword(false);
   };
-
-  const [submitError, setSubmitError] = useState<string | null | undefined>(
-    null
-  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,7 +65,7 @@ const SignIn = () => {
       if (response.success) {
         navigate("/");
       } else {
-        console.log(response.error);
+        setApiError(response.error ?? "Server Error");
       }
     }
   };
@@ -146,14 +140,8 @@ const SignIn = () => {
           >
             Sign In
           </Button>
-          {submitError ? (
-            <>
-              <Grid marginTop={2}>
-                <Alert severity="error">{submitError}</Alert>
-              </Grid>
-
-              {forgotPassword && <Link>Forgot your password?</Link>}
-            </>
+          {apiError ? (
+            <ApiError apiError={apiError} />
           ) : (
             <Grid>
               <Button onClick={() => navigate("/signup")}>

@@ -11,7 +11,10 @@ const signin = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
+    console.log("first");
+
     !user && res.status(401).json({ message: "Invalid Email" });
+    console.log("second");
     const passwordMatch = bcrypt.compare(password, user.password);
     !passwordMatch && res.status(401).json({ message: "Invalid Password" });
     res.status(200).json({
@@ -42,7 +45,7 @@ const signup = async (req, res) => {
       password: hashedPassword,
       role,
     });
-    res.status(201).json({
+    res.status(200).json({
       name: user._id,
       email: user.email,
       role: user.role,
@@ -56,9 +59,7 @@ const me = async (req, res) => {
   try {
     const decoded = jwt.verify(req.query.token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id).select("-password");
-    res
-      .status(200)
-      .json(user);
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
