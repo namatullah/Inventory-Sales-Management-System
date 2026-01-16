@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { drawerWidth } from "./DrawerNavigation";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -36,26 +38,32 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const AppNavigation = ({ open, handleDrawerOpen }: any) => {
+  const { user } = useAuth();
   return (
     <AppBar position="fixed" open={open}>
-      <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={handleDrawerOpen}
-          edge="start"
-          sx={[
-            {
-              marginRight: 5,
-            },
-            open && { display: "none" },
-          ]}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" noWrap component="div">
-          Mini variant drawer
-        </Typography>
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        <span style={{ display: "flex" }}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={[
+              {
+                marginRight: 5,
+              },
+              open && { display: "none" },
+            ]}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            Inventory & Sales Management System
+          </Typography>
+        </span>
+        <span style={{ display: "flex" }}>
+          Hello, {user?.name || user?.email}
+        </span>
       </Toolbar>
     </AppBar>
   );

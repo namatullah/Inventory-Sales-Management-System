@@ -3,10 +3,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
+import { CategoryOutlined, DashboardOutlined, Inventory2Outlined, LoginOutlined, PeopleOutline, SellOutlined } from "@mui/icons-material";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export interface MenuItem {
   label: string;
@@ -17,32 +16,32 @@ export const menuItems: MenuItem[] = [
   {
     label: "Dashboard",
     path: "/",
-    icon: <MailIcon />,
+    icon: <DashboardOutlined />,
   },
   {
     label: "Product",
     path: "/product",
-    icon: <InboxIcon />,
+    icon: <Inventory2Outlined />,
   },
   {
     label: "Sales",
     path: "/sales",
-    icon: <MailIcon />,
+    icon: <SellOutlined />,
   },
   {
     label: "Category",
     path: "/category",
-    icon: <InboxIcon />,
+    icon: <CategoryOutlined />,
   },
   {
     label: "Users",
     path: "/users",
-    icon: <MailIcon />,
+    icon: <PeopleOutline />,
   },
   {
-    label: "Sign Out",
+    label: "Logout",
     path: "logout",
-    icon: <MailIcon />,
+    icon: <LoginOutlined />,
   },
 ];
 
