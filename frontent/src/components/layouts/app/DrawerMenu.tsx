@@ -5,7 +5,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 
 export interface MenuItem {
   label: string;
@@ -40,21 +41,25 @@ export const menuItems: MenuItem[] = [
   },
   {
     label: "Sign Out",
-    path: "sginout",
+    path: "logout",
     icon: <MailIcon />,
   },
 ];
 
 const DrawerMenu = ({ open }: { open: boolean }) => {
   const location = useLocation();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const handleNavigation = (path: string) => {
+    path === "logout" ? logout() : navigate(path);
+  };
   return (
     <List>
       {menuItems.map((text) => (
         <ListItem key={text.path} disablePadding sx={{ display: "block" }}>
           <ListItemButton
             selected={location.pathname === text.path}
-            component={NavLink}
-            to={text.path}
+            onClick={() => handleNavigation(text.path)}
             sx={[
               {
                 minHeight: 48,

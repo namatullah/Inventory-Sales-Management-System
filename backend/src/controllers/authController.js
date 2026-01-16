@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 //Generate JWT token
 const generateToken = (userId) => {
@@ -51,5 +52,16 @@ const signup = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+const me = async (req, res) => {
+  try {
+    const decoded = jwt.verify(req.query.token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id).select("-password");
+    res
+      .status(200)
+      .json({ name: user.name, email: user.email, role: user.role });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
-export { signin, signup };
+export { signin, signup, me };

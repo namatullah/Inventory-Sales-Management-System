@@ -8,7 +8,6 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { drawerWidth } from "./DrawerNavigation";
 
-
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }

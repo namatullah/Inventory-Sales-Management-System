@@ -4,16 +4,17 @@ import AppLayout from "./components/layouts/AppLayout";
 import AuthLayout from "./components/layouts/AuthLayout";
 import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
-import Dashboard from "./components/pages/Dashboard";
+import Dashboard from "./components/pages/dashboard/Dashboard";
 import Sales from "./components/pages/Sales";
 import Category from "./components/pages/category/Category";
 import Users from "./components/pages/Users";
 import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "./context/AuthContext";
 
 export default function App() {
   return (
-    <>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <Routes>
           <Route element={<AppLayout />}>
             <Route path="/" element={<Dashboard />} />
@@ -27,15 +28,15 @@ export default function App() {
             <Route path="/signup" element={<SignUp />} />
           </Route>
         </Routes>
-      </BrowserRouter>
-      <Toaster
-        toastOptions={{
-          className: "",
-          style: {
-            fontSize: "13px",
-          },
-        }}
-      />
-    </>
+        <Toaster
+          toastOptions={{
+            className: "",
+            style: {
+              fontSize: "13px",
+            },
+          }}
+        />
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
