@@ -12,8 +12,9 @@ const fetchCategories = async (req, res) => {
       { $limit: limitNum },
     ]);
     const total = await Category.countDocuments();
-    categories.length === 0 &&
-      res.status(400).json({ message: "No category found" });
+    if (categories.length === 0) {
+      return res.status(400).json({ message: "No category found" });
+    }
     res.status(200).json({ data: categories, total });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
@@ -22,8 +23,9 @@ const fetchCategories = async (req, res) => {
 const getCategories = async (req, res) => {
   try {
     const categories = await Category.find().sort({ createdAt: -1 });
-    categories.length === 0 &&
-      res.status(400).json({ message: "No category found" });
+    if (categories.length === 0) {
+      return res.status(400).json({ message: "No category found" });
+    }
     res.status(200).json(categories);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
@@ -33,8 +35,9 @@ const createCategory = async (req, res) => {
   const { name } = req.body;
   try {
     const existCategory = await Category.findOne({ name });
-    existCategory &&
-      res.status(400).json({ message: "Category already exists" });
+    if (existCategory) {
+      return res.status(400).json({ message: "Category already exists" });
+    }
     const category = await Category.create({ name });
     res
       .status(200)
@@ -61,7 +64,9 @@ const updateCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);
-    !category && res.status(400).json({ message: "Category not found" });
+    if (!category) {
+      return res.status(400).json({ message: "Category not found" });
+    }
     await category.deleteOne();
     res.status(200).json({ message: "Category deleted successfully" });
   } catch (error) {

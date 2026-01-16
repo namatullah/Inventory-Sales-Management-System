@@ -3,7 +3,9 @@ import User from "../models/User.js";
 const getUsers = async (req, res) => {
   try {
     const users = await User.find().sort({ createdAt: -1 });
-    !users && res.status(400).json({ message: "users not found" });
+    if (!users) {
+      return res.status(400).json({ message: "users not found" });
+    }
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });

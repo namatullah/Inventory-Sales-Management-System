@@ -8,7 +8,9 @@ const getPrices = async (req, res) => {
     const product = await Price.find({ product: productId }).sort({
       createdAt: -1,
     });
-    !product && res.status(400).json({ message: "Product is not found" });
+    if (!product) {
+      return res.status(400).json({ message: "Product is not found" });
+    }
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
