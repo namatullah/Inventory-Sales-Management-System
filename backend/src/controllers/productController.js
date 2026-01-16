@@ -33,7 +33,7 @@ const getProductById = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-  const { name, sku, category } = req.body;
+  const { name, sku, stock, stockUnit, category } = req.body;
   try {
     const existProduct = await Product.findOne({ sku: sku });
     existProduct &&
@@ -41,6 +41,8 @@ const createProduct = async (req, res) => {
     await Product.create({
       name,
       sku,
+      stock: parseInt(stock, 10),
+      stockUnit,
       category: new mongoose.Types.ObjectId(category),
     });
     res.status(200).json({ message: "Product created successfully" });
@@ -54,7 +56,8 @@ const updateProduct = async (req, res) => {
     const product = await Product.findById({ _id: req.params.id });
     product.name = name;
     product.sku = sku;
-    (product.category = new mongoose.Types.ObjectId(category)), product.save();
+    product.category = new mongoose.Types.ObjectId(category);
+    product.save();
     res.status(200).json({ message: "Product updated successfully" }, product);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
@@ -68,6 +71,33 @@ const deleteProduct = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+const addToStock = async (req, res) => {
+  const { stock, stockUnit } = req.body;
+  try {
+    const product = await Product.findById({ _id: req.params.id });
+    product.stock = product.stock + parseInt(stock, 10);
+    product.stockUnit = stockUnit;
+    product.save();
+    res.status(200).json({
+      message: "Product quantity added to stock successfully",
+      data: product,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+const getStock = async (req, res) => {
+  try {
+    const product = await Product.findById({ _id: req.params.id });
+
+    !product && res.status(400).json({ message: "Product is not found" });
+    res
+      .status(200)
+      .json({ stock: product.stock, stockUnit: product.stockUnit });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
 export {
   fetchProducts,
@@ -75,4 +105,6 @@ export {
   createProduct,
   updateProduct,
   deleteProduct,
+  addToStock,
+  getStock,
 };
