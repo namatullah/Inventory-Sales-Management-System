@@ -23,11 +23,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(data);
     } catch (error) {
       setUser(null);
+      navigate("/signin");
     } finally {
       setLoading(false);
     }
   };
   useLayoutEffect(() => {
+    console.log("here");
     checkAuthStatus();
   }, []);
 

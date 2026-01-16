@@ -5,7 +5,7 @@ import AuthLayout from "./components/layouts/AuthLayout";
 import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 import Dashboard from "./components/pages/dashboard/Dashboard";
-import Sales from "./components/pages/Sales";
+import Sales from "./components/pages/sale/Sales";
 import Category from "./components/pages/category/Category";
 import Users from "./components/pages/Users";
 import { Toaster } from "react-hot-toast";

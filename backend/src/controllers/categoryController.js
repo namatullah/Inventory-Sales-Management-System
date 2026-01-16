@@ -6,9 +6,9 @@ const fetchCategories = async (req, res) => {
     const limitNum = parseInt(limit, 10);
     const pageNum = parseInt(page, 10);
     const skip = (pageNum - 1) * limitNum;
-
     const categories = await Category.aggregate([
       { $skip: skip },
+      { $sort: { createdAt: -1 } },
       { $limit: limitNum },
     ]);
     const total = await Category.countDocuments();
@@ -21,7 +21,7 @@ const fetchCategories = async (req, res) => {
 };
 const getCategories = async (req, res) => {
   try {
-    const categories = await Category.find();
+    const categories = await Category.find().sort({ createdAt: -1 });
     categories.length === 0 &&
       res.status(400).json({ message: "No category found" });
     res.status(200).json(categories);

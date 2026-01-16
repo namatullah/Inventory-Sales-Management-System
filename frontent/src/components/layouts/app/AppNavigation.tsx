@@ -9,6 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { drawerWidth } from "./DrawerNavigation";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
+import { ProductionQuantityLimitsOutlined } from "@mui/icons-material";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;

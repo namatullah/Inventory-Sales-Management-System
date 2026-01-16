@@ -10,6 +10,7 @@ const fetchProducts = async (req, res) => {
 
     const products = await Product.find()
       .populate("category")
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limitNum);
     const total = await Product.countDocuments();
