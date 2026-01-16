@@ -58,7 +58,7 @@ const me = async (req, res) => {
     const user = await User.findById(decoded.id).select("-password");
     res
       .status(200)
-      .json({ name: user.name, email: user.email, role: user.role });
+      .json(user);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }

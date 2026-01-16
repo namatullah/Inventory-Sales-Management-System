@@ -1,5 +1,4 @@
 import {
-  Button,
   Paper,
   Table,
   TableBody,
@@ -10,21 +9,18 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import {
-  AddOutlined,
-  DeleteForever,
-  EditNoteOutlined,
-} from "@mui/icons-material";
+import { DeleteForever } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import type { CategoryType } from "../../../types";
-import { deleteCategory, fetchCategories } from "../../../lib/category";
 import ApiError from "../../common/ApiError";
 import DeleteData from "../../common/DeleteData";
 import toast from "react-hot-toast";
-const Sales = () => {
-  const [open, setOpen] = useState(false);
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-  const [category, setCategory] = useState<CategoryType | null>(null);
+import { deleteUser, fetchUsers } from "../../../lib/users";
+import { useAuth } from "../../../context/AuthContext";
+const Users = () => {
+  const { user } = useAuth();
+  const [users, setUsers] = useState<any>([]);
+
+  const [usr, setUsr] = useState<any>(null);
   const [apiError, setApiError] = useState<string>("");
 
   const [paginantion, setPagination] = useState({
@@ -50,48 +46,39 @@ const Sales = () => {
     });
   };
 
-  const handleOpenClose = () => {
-    setCategory(null);
-    setOpen(!open);
-  };
-  const handleUpdate = (cat: CategoryType) => {
-    setCategory(cat);
-    setOpen(!open);
-  };
   const [openDelete, setOpenDelete] = useState(false);
 
-  const handleDelete = (cat: CategoryType) => {
-    setCategory(cat);
+  const handleDelete = (cat: any) => {
+    setUsr(cat);
     setOpenDelete(true);
   };
   const handleCloseDelete = () => {
-    setCategory(null);
+    setUsr(null);
     setOpenDelete(false);
   };
 
-  const getCategories = async () => {
+  const getUsers = async () => {
     setApiError("");
     try {
-      const { data } = await fetchCategories(paginantion);
-      setCategories(data.data);
-      setTotal(data.total);
+      const { data } = await fetchUsers();
+      setUsers(data);
+      setTotal(data.length);
     } catch (error: any) {
-      setCategories([]);
       setApiError(
         error.response?.data?.message
           ? error.response?.data?.message
-          : "Fetching categories faild"
+          : "Fetching users faild"
       );
     }
   };
 
   useEffect(() => {
-    getCategories();
-  }, [open, openDelete, paginantion.page, paginantion.rowsPerPage]);
+    getUsers();
+  }, [openDelete, paginantion.page, paginantion.rowsPerPage]);
 
   const onDelete = async () => {
     try {
-      const { data } = await deleteCategory(category?._id);
+      const { data } = await deleteUser(usr?._id);
       toast.success(data?.message);
     } catch (error: any) {
       setApiError(
@@ -101,17 +88,14 @@ const Sales = () => {
       );
     }
   };
-
+console.log(user, users)
   return (
     <>
-      {open && (
-        <Form open={open} onClose={handleOpenClose} category={category} />
-      )}
       {openDelete && (
         <DeleteData
           open={openDelete}
           onClose={handleCloseDelete}
-          message={"Are you sure to delete category (" + category?.name + ") ?"}
+          message={"Are you sure to delete user (" + usr?.name + ") ?"}
           deleteFunction={onDelete}
         />
       )}
@@ -128,53 +112,44 @@ const Sales = () => {
                   }}
                 >
                   <Typography sx={{ fontSize: "20px" }}>Sales</Typography>
-                  <Button
-                    variant="outlined"
-                    onClick={handleOpenClose}
-                    startIcon={<AddOutlined />}
-                  >
-                    <span style={{ paddingTop: "inherit" }}>Add Sale</span>
-                  </Button>
                 </div>
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell sx={{ fontWeight: "bold", color: "GrayText" }}>
-                Date
+                FUll Name
               </TableCell>
               <TableCell sx={{ fontWeight: "bold", color: "GrayText" }}>
-                Sold By
+                Email
               </TableCell>
               <TableCell sx={{ fontWeight: "bold", color: "GrayText" }}>
-                Items
+                Role
               </TableCell>
               <TableCell sx={{ fontWeight: "bold", color: "GrayText" }}>
-                Total Amount
+                Joined At
               </TableCell>
               <TableCell sx={{ fontWeight: "bold", color: "GrayText" }}>
-                Actions
+                Delete
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {categories.map((category: CategoryType) => (
-              <TableRow key={category._id}>
-                <TableCell>{category.name}</TableCell>
-                <TableCell>{category.name}</TableCell>
-                <TableCell>{category.name}</TableCell>
-                <TableCell>{category.name}</TableCell>
-                <TableCell>
-                  <EditNoteOutlined
-                    color="primary"
-                    onClick={() => handleUpdate(category)}
-                  />
-                  <DeleteForever
-                    color="error"
-                    onClick={() => handleDelete(category)}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
+            {users
+              .filter((u: any) => u._id !== user._id)
+              .map((u: any) => (
+                <TableRow key={u._id}>
+                  <TableCell>{u.name}</TableCell>
+                  <TableCell>{u.email}</TableCell>
+                  <TableCell>{u.role}</TableCell>
+                  <TableCell>{u.createdAt}</TableCell>
+                  <TableCell>
+                    <DeleteForever
+                      color="error"
+                      onClick={() => handleDelete(u)}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
             {apiError && (
               <TableRow>
                 <TableCell colSpan={5}>
@@ -202,4 +177,4 @@ const Sales = () => {
   );
 };
 
-export default Sales;
+export default Users;
