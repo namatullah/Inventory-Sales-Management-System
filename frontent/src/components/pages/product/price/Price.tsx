@@ -5,7 +5,7 @@ import PriceList from "./PriceList";
 import { PriceProvider } from "./contextReducer/PriceContexts";
 import LatestPrice from "./LatestPrice";
 
-const Price = ({ product }: { product: ProductType | any }) => {
+const Price = ({ product }: { product: ProductType }) => {
   const [pricePreview, setPricePreview] = useState(false);
 
   return (
@@ -24,13 +24,13 @@ const Price = ({ product }: { product: ProductType | any }) => {
           gap: 6,
         }}
       >
+        <LatestPrice />
         <PreviewOutlined
           color="primary"
           onClick={() => {
             setPricePreview(true);
           }}
         />
-        <LatestPrice />
       </span>
     </PriceProvider>
   );

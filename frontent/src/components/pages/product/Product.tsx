@@ -24,6 +24,8 @@ import Form from "./Form";
 import DeleteData from "../../common/DeleteData";
 import Price from "./price/Price";
 import toast from "react-hot-toast";
+import Stock from "./stock/Stock";
+import { StockProvider } from "./stock/contextReducer/StockContexts";
 const Product = () => {
   const [open, setOpen] = useState(false);
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -154,10 +156,10 @@ const Product = () => {
                 Actions
               </TableCell>
               <TableCell sx={{ fontWeight: "bold", color: "GrayText" }}>
-                Price
+                Stock
               </TableCell>
               <TableCell sx={{ fontWeight: "bold", color: "GrayText" }}>
-                Stock
+                Price
               </TableCell>
             </TableRow>
           </TableHead>
@@ -178,19 +180,16 @@ const Product = () => {
                   />
                 </TableCell>
                 <TableCell>
-                  <Price product={product} />
+                  <StockProvider
+                    productId={product._id}
+                    initialStock={product.stock}
+                    initialStockUnit={product.stockUnit}
+                  >
+                    <Stock productId={product._id} />
+                  </StockProvider>
                 </TableCell>
                 <TableCell>
-                  <span
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 6,
-                    }}
-                  >
-                    <PreviewOutlined color="primary" />
-                    <span>11 Af</span>
-                  </span>
+                  <Price product={product} />
                 </TableCell>
               </TableRow>
             ))}

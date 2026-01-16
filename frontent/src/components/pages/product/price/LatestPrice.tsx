@@ -1,6 +1,4 @@
-import {
-  usePricesContext,
-} from "./contextReducer/PriceContexts";
+import { usePricesContext } from "./contextReducer/PriceContexts";
 import type { PriceType } from "../../../../types";
 
 const LatestPrice = () => {
@@ -14,7 +12,7 @@ const LatestPrice = () => {
             : latest;
         })
       : null;
-  return <span>{latest?.price}/. (Af)</span>;
+  return <span>{latest ? latest?.price + "/. (Af)" : "N/A"} </span>;
 };
 
 export default LatestPrice;

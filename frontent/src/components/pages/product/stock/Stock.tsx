@@ -1,13 +1,32 @@
-import { List, ListItem, ListItemText } from "@mui/material";
-import type { ProductType } from "../../../../types";
-import { PreviewOutlined, PreviewSharp } from "@mui/icons-material";
+import { useState } from "react";
+import { AddOutlined } from "@mui/icons-material";
+import Form from "./Form";
+import { useStockContext } from "./contextReducer/StockContexts";
 
-const Stock = ({ product }: ProductType) => {
+const Stock = ({ productId }: { productId: string }) => {
+  const stock = useStockContext();
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-      <PreviewOutlined color="primary" />
-      <span>303</span>
-    </span>
+    <>
+      {open && <Form open={open} onClose={handleClose} productId={productId} />}
+      <span
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+        }}
+      >
+        <span>
+          {stock.stock !== 0 ? stock.stock + ` (${stock.stockUnit})` : "N/A"}{" "}
+        </span>
+        <AddOutlined color="primary" onClick={() => setOpen(true)} />
+      </span>
+    </>
   );
 };
 

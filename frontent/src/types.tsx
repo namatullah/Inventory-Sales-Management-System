@@ -15,5 +15,7 @@ export interface ProductType {
   _id: string;
   name: string;
   sku: string;
+  stock: number | string;
+  stockUnit: string;
   category?: CategoryType;
 }

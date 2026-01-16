@@ -50,7 +50,11 @@ const Form = ({
           const { data } = await updateProduct(product._id, formData);
           toast.success(data.message);
         } else {
-          const { data } = await createProduct(formData);
+          const { data } = await createProduct({
+            ...formData,
+            stock: 0,
+            stockUnit: "",
+          });
           toast.success(data.message);
         }
         onClose();
