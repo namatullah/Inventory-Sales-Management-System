@@ -22,6 +22,17 @@ const fetchProducts = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+const getProducts = async (req, res) => {
+  try {
+    const products = await Product.find().sort({ createdAt: -1 });
+    if (products.length === 0) {
+      return res.status(400).json({ message: "No Product found" });
+    }
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findById({ _id: req.params.id }).populate(
@@ -109,6 +120,7 @@ const getStock = async (req, res) => {
 
 export {
   fetchProducts,
+  getProducts,
   getProductById,
   createProduct,
   updateProduct,

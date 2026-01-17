@@ -2,13 +2,15 @@ import type { ProductType } from "../types";
 import api from "./axios";
 
 export const fetchProducts = (pagination: any) => {
-  return api.get("/products", {
+  return api.get("/products/list", {
     params: {
       limit: pagination.rowsPerPage,
       page: pagination.page + 1,
     },
   });
 };
+
+export const getProducts = () => api.get("/products");
 
 export const createProduct = (data: ProductType | any) =>
   api.post("/products", data);

@@ -16,6 +16,7 @@ import DeleteData from "../../common/DeleteData";
 import toast from "react-hot-toast";
 import { deleteUser, fetchUsers } from "../../../lib/users";
 import { useAuth } from "../../../context/AuthContext";
+import moment from "moment";
 const Users = () => {
   const { user } = useAuth();
   const [users, setUsers] = useState<any>([]);
@@ -60,9 +61,9 @@ const Users = () => {
   const getUsers = async () => {
     setApiError("");
     try {
-      const { data } = await fetchUsers();
-      setUsers(data);
-      setTotal(data.length);
+      const { data } = await fetchUsers(paginantion);
+      setUsers(data.data);
+      setTotal(data.total);
     } catch (error: any) {
       setApiError(
         error.response?.data?.message
@@ -88,7 +89,7 @@ const Users = () => {
       );
     }
   };
-console.log(user, users)
+  console.log(user, users);
   return (
     <>
       {openDelete && (
@@ -141,7 +142,9 @@ console.log(user, users)
                   <TableCell>{u.name}</TableCell>
                   <TableCell>{u.email}</TableCell>
                   <TableCell>{u.role}</TableCell>
-                  <TableCell>{u.createdAt}</TableCell>
+                  <TableCell>
+                    {moment(u.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                  </TableCell>
                   <TableCell>
                     <DeleteForever
                       color="error"

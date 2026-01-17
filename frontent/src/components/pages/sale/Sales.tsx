@@ -21,6 +21,7 @@ import { deleteCategory, fetchCategories } from "../../../lib/category";
 import ApiError from "../../common/ApiError";
 import DeleteData from "../../common/DeleteData";
 import toast from "react-hot-toast";
+import Form from "./Form";
 const Sales = () => {
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -105,7 +106,7 @@ const Sales = () => {
   return (
     <>
       {open && (
-        <Form open={open} onClose={handleOpenClose} category={category} />
+        <Form open={open} onClose={handleOpenClose} />
       )}
       {openDelete && (
         <DeleteData

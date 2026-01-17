@@ -5,13 +5,15 @@ import {
   deleteProduct,
   fetchProducts,
   getProductById,
+  getProducts,
   getStock,
   updateProduct,
 } from "../controllers/productController.js";
 
 const router = express.Router();
 
-router.get("/", fetchProducts);
+router.get("/list", fetchProducts);
+router.get("/", getProducts);
 router.get("/:id", getProductById);
 router.get("/:id/get_stock", getStock);
 router.post("/", createProduct);
