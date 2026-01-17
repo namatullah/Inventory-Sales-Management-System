@@ -105,7 +105,6 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
-
               <TableBody>
                 {rows.map((row: any, index: number) => (
                   <TableRow key={index}>
@@ -133,7 +132,6 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                         ))}
                       </TextField>
                     </TableCell>
-
                     {/* QUANTITY */}
                     <TableCell>
                       <TextField
@@ -167,7 +165,6 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                         disabled
                       />
                     </TableCell>
-
                     {/* DELETE */}
                     <TableCell>
                       {index !== 0 && (

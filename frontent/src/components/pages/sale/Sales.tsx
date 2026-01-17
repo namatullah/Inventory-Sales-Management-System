@@ -10,22 +10,16 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import {
-  AddOutlined,
-  DeleteForever,
-  EditNoteOutlined,
-} from "@mui/icons-material";
+import { AddOutlined, PreviewOutlined, ViewListOutlined } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import type { CategoryType } from "../../../types";
-import { deleteCategory, fetchCategories } from "../../../lib/category";
 import ApiError from "../../common/ApiError";
-import DeleteData from "../../common/DeleteData";
-import toast from "react-hot-toast";
 import Form from "./Form";
+import { getSales } from "../../../lib/sale";
+import Items from "./Items";
 const Sales = () => {
   const [open, setOpen] = useState(false);
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-  const [category, setCategory] = useState<CategoryType | null>(null);
+  const [sales, setSales] = useState<any[]>([]);
   const [apiError, setApiError] = useState<string>("");
 
   const [paginantion, setPagination] = useState({
@@ -52,32 +46,16 @@ const Sales = () => {
   };
 
   const handleOpenClose = () => {
-    setCategory(null);
     setOpen(!open);
-  };
-  const handleUpdate = (cat: CategoryType) => {
-    setCategory(cat);
-    setOpen(!open);
-  };
-  const [openDelete, setOpenDelete] = useState(false);
-
-  const handleDelete = (cat: CategoryType) => {
-    setCategory(cat);
-    setOpenDelete(true);
-  };
-  const handleCloseDelete = () => {
-    setCategory(null);
-    setOpenDelete(false);
   };
 
   const getCategories = async () => {
     setApiError("");
     try {
-      const { data } = await fetchCategories(paginantion);
-      setCategories(data.data);
+      const { data } = await getSales(paginantion);
+      setSales(data.data);
       setTotal(data.total);
     } catch (error: any) {
-      setCategories([]);
       setApiError(
         error.response?.data?.message
           ? error.response?.data?.message
@@ -85,37 +63,15 @@ const Sales = () => {
       );
     }
   };
+  console.log(sales);
 
   useEffect(() => {
     getCategories();
-  }, [open, openDelete, paginantion.page, paginantion.rowsPerPage]);
-
-  const onDelete = async () => {
-    try {
-      const { data } = await deleteCategory(category?._id);
-      toast.success(data?.message);
-    } catch (error: any) {
-      setApiError(
-        error.response?.data?.message
-          ? error.response?.data?.message
-          : "Deletion failed"
-      );
-    }
-  };
+  }, [open, paginantion.page, paginantion.rowsPerPage]);
 
   return (
     <>
-      {open && (
-        <Form open={open} onClose={handleOpenClose} />
-      )}
-      {openDelete && (
-        <DeleteData
-          open={openDelete}
-          onClose={handleCloseDelete}
-          message={"Are you sure to delete category (" + category?.name + ") ?"}
-          deleteFunction={onDelete}
-        />
-      )}
+      {open && <Form open={open} onClose={handleOpenClose} />}
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
@@ -153,27 +109,20 @@ const Sales = () => {
                 Total Amount
               </TableCell>
               <TableCell sx={{ fontWeight: "bold", color: "GrayText" }}>
-                Actions
+                View
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {categories.map((category: CategoryType) => (
-              <TableRow key={category._id}>
-                <TableCell>{category.name}</TableCell>
-                <TableCell>{category.name}</TableCell>
-                <TableCell>{category.name}</TableCell>
-                <TableCell>{category.name}</TableCell>
+            {sales.map((sale: any) => (
+              <TableRow key={sale._id}>
+                <TableCell>{sale.createdAt}</TableCell>
+                <TableCell>{sale.soldBy.name}</TableCell>
                 <TableCell>
-                  <EditNoteOutlined
-                    color="primary"
-                    onClick={() => handleUpdate(category)}
-                  />
-                  <DeleteForever
-                    color="error"
-                    onClick={() => handleDelete(category)}
-                  />
+                  <Items items={sale.items} />
                 </TableCell>
+                <TableCell>{sale.totalAmount} Af</TableCell>
+                <TableCell><PreviewOutlined color="primary" /></TableCell>
               </TableRow>
             ))}
             {apiError && (
