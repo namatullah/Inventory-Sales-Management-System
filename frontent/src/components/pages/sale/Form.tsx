@@ -15,23 +15,23 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getProducts } from "../../../lib/product";
 import type { ProductType } from "../../../types";
-const products = [
-  { id: 1, name: "Laptop", price: 800 },
-  { id: 2, name: "Mouse", price: 20 },
-  { id: 3, name: "Keyboard", price: 40 },
-  { id: 4, name: "Monitor", price: 250 },
-];
+import { useAuth } from "../../../context/AuthContext";
+import { createSales } from "../../../lib/sale";
+import ApiError from "../../common/ApiError";
 
 const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const { user } = useAuth();
+  const [apiError, setApiError] = useState<string>("");
+  const [prods, setProds] = useState<ProductType[]>([]);
   const fetchProducts = async () => {
     try {
       const { data } = await getProducts();
-      setProducts(data);
+      setProds(data);
     } catch (error) {
       console.log(error);
     }
@@ -66,23 +66,35 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 
   const grandTotal = rows.reduce((sum: number, row: any) => sum + row.total, 0);
 
-  const handleSubmit = () => {};
-  console.log(rows[0]);
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      await createSales({ userId: user._id, rows });
+      onClose();
+    } catch (error: any) {
+      setApiError(
+        error.response?.data?.message
+          ? error.response?.data?.message
+          : "Fetching categories faild"
+      );
+    }
+  };
+
   return (
     <Dialog maxWidth="md" open={open} fullWidth>
       <form onSubmit={handleSubmit}>
         <DialogTitle
           sx={{
             display: "flex",
-            justifyContent: "flex-end",
-            px: 1.8,
-            pb: 1.5,
+            justifyContent: "space-between",
           }}
         >
+          <Typography>Adding Sales</Typography>
           <CloseOutlined onClick={onClose} color="error" />
         </DialogTitle>
         <Divider />
         <DialogContent>
+          {apiError && <ApiError apiError={apiError} />}
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
               <TableHead>
@@ -107,15 +119,15 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                         value={row.productId}
                         fullWidth
                         onChange={(e) => {
-                          const product = products.find(
-                            (p) => p.id === Number(e.target.value)
+                          const product: any = prods.find(
+                            (p) => p._id === e.target.value
                           );
                           handleChange(index, "productId", e.target.value);
                           handleChange(index, "price", product?.price || 0);
                         }}
                       >
-                        {products.map((product) => (
-                          <MenuItem key={product.id} value={product.id}>
+                        {prods.map((product: any) => (
+                          <MenuItem key={product._id} value={product._id}>
                             {product.name} (${product.price})
                           </MenuItem>
                         ))}

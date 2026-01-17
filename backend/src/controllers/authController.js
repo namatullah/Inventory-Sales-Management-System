@@ -19,6 +19,7 @@ const signin = async (req, res) => {
       return res.status(401).json({ message: "Invalid Password" });
     }
     res.status(200).json({
+      _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
@@ -49,7 +50,8 @@ const signup = async (req, res) => {
       role,
     });
     res.status(200).json({
-      name: user._id,
+      _id: user._id,
+      name: user.name,
       email: user.email,
       role: user.role,
       token: generateToken(user._id),

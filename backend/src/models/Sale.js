@@ -34,11 +34,11 @@ const SaleSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-SaleSchema.pre("save", function (next) {
+SaleSchema.pre("validate", function () {
   this.totalAmount = this.items.reduce(
     (sum, item) => sum + item.quantity * item.priceAtSale,
     0
   );
-  next();
 });
+
 export default mongoose.model("Sale", SaleSchema);

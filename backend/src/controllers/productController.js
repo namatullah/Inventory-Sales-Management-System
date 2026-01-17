@@ -24,7 +24,37 @@ const fetchProducts = async (req, res) => {
 };
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find().sort({ createdAt: -1 });
+    const products = await Product.aggregate([
+      {
+        $lookup: {
+          from: "prices",
+          let: { productId: "$_id" },
+          pipeline: [
+            {
+              $match: { $expr: { $eq: ["$product", "$$productId"] } },
+            },
+            { $sort: { createdAt: -1 } },
+            {
+              $limit: 1,
+            },
+          ],
+          as: "latestPrice",
+        },
+      },
+      {
+        $unwind: { path: "$latestPrice", preserveNullAndEmptyArrays: true },
+      },
+      { $sort: { createdAt: -1 } },
+      {
+        $project: {
+          name: 1,
+          sku: 1,
+          stock: 1,
+          stockUnit: 1,
+          price: "$latestPrice.price",
+        },
+      },
+    ]);
     if (products.length === 0) {
       return res.status(400).json({ message: "No Product found" });
     }
@@ -117,6 +147,31 @@ const getStock = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+const getAgg = async (req, res) => {
+  try {
+  const orders = mongoose.connection.db.collection("orders");
+
+    const data = await orders.aggregate([
+      {
+        $lookup: {
+          from: "warehouses",
+          localField: "item",
+          foreignField: "stock_item",
+          let: { order_qty: "$ordered" },
+          pipeline: [
+            { $match: { $expr: { $gte: ["$instock", "$$order_qty"] } } },
+            { $project: { stock_item: 0, _id: 0 } },
+          ],
+          as: "stockdata",
+        },
+      },
+    ]);
+
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 export {
   fetchProducts,
@@ -127,4 +182,5 @@ export {
   deleteProduct,
   addToStock,
   getStock,
+  getAgg,
 };

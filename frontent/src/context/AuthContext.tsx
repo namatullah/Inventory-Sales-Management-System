@@ -29,7 +29,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   useLayoutEffect(() => {
-    console.log('here')
     checkAuthStatus();
   }, []);
 
@@ -50,9 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const register = async (userData: any) => {
     try {
       const { data } = await signup(userData);
-      
       setUser(data);
-      
       localStorage.setItem("token", data.token);
       return { success: true, data };
     } catch (error: any) {
