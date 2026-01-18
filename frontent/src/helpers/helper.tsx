@@ -22,13 +22,13 @@ export const menuItems: MenuItem[] = [
     roles: ["admin", "staff"],
   },
   {
-    label: "Product",
+    label: "Products",
     path: "/product",
     icon: <Inventory2Outlined />,
     roles: ["admin", "staff"],
   },
   {
-    label: "Category",
+    label: "Categories",
     path: "/category",
     icon: <CategoryOutlined />,
     roles: ["admin"],
@@ -51,3 +51,26 @@ export const PAGINATION = {
   ROWS_PER_PAGE: 5,
   ROWS_PER_PAGE_OPTIONS: [5, 10],
 };
+
+export const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#A28BFE",
+  "#FF6699",
+];
+export const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];

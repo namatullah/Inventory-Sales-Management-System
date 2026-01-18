@@ -114,7 +114,7 @@ const Users = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Typography sx={{ fontSize: "20px" }}>Sales</Typography>
+                  <Typography sx={{ fontSize: "20px" }}>Users</Typography>
                 </div>
               </TableCell>
             </TableRow>

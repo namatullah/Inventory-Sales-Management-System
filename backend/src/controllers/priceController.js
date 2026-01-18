@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import Product from "../models/Product.js";
 import Price from "../models/Price.js";
 
 const getPrices = async (req, res) => {

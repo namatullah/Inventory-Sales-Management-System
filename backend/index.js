@@ -9,6 +9,7 @@ import productRoutes from "./src/routes/productRoutes.js";
 import priceRoutes from "./src/routes/priceRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import saleRoutes from "./src/routes/saleRoutes.js";
+import reportRoutes from "./src/routes/reportRoutes.js";
 
 const app = express();
 // connect to mongo
@@ -30,6 +31,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/prices", priceRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/sales", saleRoutes);
+app.use("/api/reports", reportRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log("Server is running on the PORT: ", PORT));
