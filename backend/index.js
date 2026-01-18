@@ -11,7 +11,7 @@ import userRoutes from "./src/routes/userRoutes.js";
 import saleRoutes from "./src/routes/saleRoutes.js";
 
 const app = express();
-
+// connect to mongo
 connectDB();
 
 app.use(
@@ -23,6 +23,7 @@ app.use(
 );
 
 app.use(express.json());
+
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);

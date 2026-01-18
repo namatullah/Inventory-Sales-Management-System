@@ -4,24 +4,23 @@ import {
   createProduct,
   deleteProduct,
   fetchProducts,
-  getAgg,
   getProductById,
   getProducts,
   getStock,
   updateProduct,
 } from "../controllers/productController.js";
+import { adminAuth, protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
-router.get("/agg", getAgg);
 
-router.get("/list", fetchProducts);
+router.get("/list",protect, fetchProducts);
 router.get("/", getProducts);
-router.get("/:id", getProductById);
+router.get("/:id",protect, getProductById);
 router.get("/:id/get_stock", getStock);
-router.post("/", createProduct);
-router.put("/:id", updateProduct);
-router.put("/:id/add_to_stock", addToStock);
-router.delete("/:id", deleteProduct);
+router.post("/",protect,adminAuth, createProduct);
+router.put("/:id",protect,adminAuth, updateProduct);
+router.put("/:id/add_to_stock",protect,adminAuth, addToStock);
+router.delete("/:id",protect,adminAuth, deleteProduct);
 
 
 export default router;

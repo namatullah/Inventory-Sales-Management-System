@@ -147,31 +147,6 @@ const getStock = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-const getAgg = async (req, res) => {
-  try {
-  const orders = mongoose.connection.db.collection("orders");
-
-    const data = await orders.aggregate([
-      {
-        $lookup: {
-          from: "warehouses",
-          localField: "item",
-          foreignField: "stock_item",
-          let: { order_qty: "$ordered" },
-          pipeline: [
-            { $match: { $expr: { $gte: ["$instock", "$$order_qty"] } } },
-            { $project: { stock_item: 0, _id: 0 } },
-          ],
-          as: "stockdata",
-        },
-      },
-    ]);
-
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
 
 export {
   fetchProducts,
@@ -182,5 +157,4 @@ export {
   deleteProduct,
   addToStock,
   getStock,
-  getAgg,
 };
