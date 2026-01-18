@@ -1,7 +1,8 @@
+import type { UserType } from "../types";
 import api from "./axios";
 
-export const signup = (data: any) => api.post("/auth/signup", data);
-export const signin = (data: any) => api.post("/auth/signin", data);
+export const signup = (data: UserType) => api.post("/auth/signup", data);
+export const signin = (data: UserType) => api.post("/auth/signin", data);
 export const me = (token: string | any) =>
   api.get("/auth/me", {
     params: {

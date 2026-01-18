@@ -1,6 +1,7 @@
+import type { PaginationType } from "../types";
 import api from "./axios";
 
-export const getSales = (pagination: any) =>
+export const getSales = (pagination: PaginationType) =>
   api.get("/sales", {
     params: {
       limit: pagination.rowsPerPage,

@@ -10,19 +10,20 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { AddOutlined, PreviewOutlined, ViewListOutlined } from "@mui/icons-material";
+import { AddOutlined, PreviewOutlined } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import type { CategoryType } from "../../../types";
 import ApiError from "../../common/ApiError";
 import Form from "./Form";
 import { getSales } from "../../../lib/sale";
 import Items from "./Items";
+import moment from "moment";
+import type { PaginationType, SaleType } from "../../../types";
 const Sales = () => {
   const [open, setOpen] = useState(false);
-  const [sales, setSales] = useState<any[]>([]);
+  const [sales, setSales] = useState<SaleType[]>([]);
   const [apiError, setApiError] = useState<string>("");
 
-  const [paginantion, setPagination] = useState({
+  const [paginantion, setPagination] = useState<PaginationType>({
     page: 0,
     rowsPerPage: 5,
   });
@@ -63,12 +64,10 @@ const Sales = () => {
       );
     }
   };
-  console.log(sales);
 
   useEffect(() => {
     getCategories();
   }, [open, paginantion.page, paginantion.rowsPerPage]);
-
   return (
     <>
       {open && <Form open={open} onClose={handleOpenClose} />}
@@ -114,15 +113,19 @@ const Sales = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sales.map((sale: any) => (
+            {sales.map((sale: SaleType) => (
               <TableRow key={sale._id}>
-                <TableCell>{sale.createdAt}</TableCell>
+                <TableCell>
+                  {moment(sale.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                </TableCell>
                 <TableCell>{sale.soldBy.name}</TableCell>
                 <TableCell>
                   <Items items={sale.items} />
                 </TableCell>
                 <TableCell>{sale.totalAmount} Af</TableCell>
-                <TableCell><PreviewOutlined color="primary" /></TableCell>
+                <TableCell>
+                  <PreviewOutlined color="primary" />
+                </TableCell>
               </TableRow>
             ))}
             {apiError && (

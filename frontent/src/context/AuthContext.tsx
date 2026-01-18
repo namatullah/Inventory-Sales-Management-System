@@ -7,6 +7,7 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { me, signin, signup } from "../lib/auth";
+import type { UserType } from "../types";
 
 const AuthContext = createContext<any>(null);
 
@@ -32,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkAuthStatus();
   }, []);
 
-  const login = async (credentials: any) => {
+  const login = async (credentials: UserType) => {
     try {
       const { data } = await signin(credentials);
       setUser(data);
@@ -46,7 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const register = async (userData: any) => {
+  const register = async (userData: UserType) => {
     try {
       const { data } = await signup(userData);
       setUser(data);

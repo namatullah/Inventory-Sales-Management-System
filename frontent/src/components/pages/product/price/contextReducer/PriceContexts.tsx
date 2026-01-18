@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useReducer } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  type ReactNode,
+} from "react";
 import PriceReducer from "./PriceReducer";
 import { fetchPrices } from "../../../../../lib/price";
 import type { PriceType } from "../../../../../types";
@@ -11,7 +17,7 @@ export const PriceProvider = ({
   children,
 }: {
   productId: string;
-  children: any;
+  children: ReactNode;
 }) => {
   const [prices, dispatch] = useReducer(PriceReducer, []);
   const getPrices = async () => {

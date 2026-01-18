@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer, type ReactNode } from "react";
 import { getStock } from "../../../../../lib/product";
 import StockReducer from "./StockReduser";
 
@@ -14,7 +14,7 @@ export const StockProvider = ({
   productId: string;
   initialStock: number | string;
   initialStockUnit: string;
-  children: any;
+  children: ReactNode;
 }) => {
   const [stock, dispatch] = useReducer(StockReducer, {
     stock: initialStock,

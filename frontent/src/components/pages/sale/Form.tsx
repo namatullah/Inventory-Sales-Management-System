@@ -125,7 +125,7 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                           handleChange(index, "price", product?.price || 0);
                         }}
                       >
-                        {prods.map((product: any) => (
+                        {prods.map((product: ProductType) => (
                           <MenuItem key={product._id} value={product._id}>
                             {product.name} (${product.price})
                           </MenuItem>

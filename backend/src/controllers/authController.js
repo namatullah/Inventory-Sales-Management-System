@@ -1,11 +1,6 @@
 import User from "../models/User.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-
-//Generate JWT token
-const generateToken = (userId) => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "1h" });
-};
+import { generateToken, verifyToken } from "../utils/jwt.js";
+import { generateHash, verifyPassword } from "../utils/password.js";
 
 const signin = async (req, res) => {
   const { email, password } = req.body;
@@ -14,7 +9,7 @@ const signin = async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: "Invalid Email" });
     }
-    const passwordMatch = bcrypt.compare(password, user.password);
+    const passwordMatch = verifyPassword(password, user.password);
     if (!passwordMatch) {
       return res.status(401).json({ message: "Invalid Password" });
     }
@@ -37,8 +32,7 @@ const signup = async (req, res) => {
     if (existUser) {
       return res.status(400).json({ message: "User already exist" });
     }
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = generateHash(password);
     const role =
       adminInviteToken && adminInviteToken == process.env.ADMIN_INVITE_TOKEN
         ? "admin"
@@ -62,7 +56,7 @@ const signup = async (req, res) => {
 };
 const me = async (req, res) => {
   try {
-    const decoded = jwt.verify(req.query.token, process.env.JWT_SECRET);
+    const decoded = verifyToken(req.query.token);
     const user = await User.findById(decoded.id).select("-password");
     res.status(200).json(user);
   } catch (error) {
