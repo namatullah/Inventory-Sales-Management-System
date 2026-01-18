@@ -4,7 +4,7 @@ import { adminAuth, protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", getPrices);
+router.get("/",protect, getPrices);
 router.post("/",protect,adminAuth, createPrice);
 router.delete("/:id",protect,adminAuth, deletePrice);
 

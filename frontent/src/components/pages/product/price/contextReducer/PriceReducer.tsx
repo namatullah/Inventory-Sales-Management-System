@@ -1,4 +1,4 @@
-import type { PriceType } from "../../../../../types";
+import type { PriceType } from "../../../../../helpers/types";
 
 const PriceReducer = (prices: PriceType[], action: any) => {
   switch (action.type) {

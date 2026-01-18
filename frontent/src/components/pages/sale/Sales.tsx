@@ -17,7 +17,7 @@ import Form from "./Form";
 import { getSales } from "../../../lib/sale";
 import Items from "./Items";
 import moment from "moment";
-import type { PaginationType, SaleType } from "../../../types";
+import type { PaginationType, SaleType } from "../../../helpers/types";
 const Sales = () => {
   const [open, setOpen] = useState(false);
   const [sales, setSales] = useState<SaleType[]>([]);

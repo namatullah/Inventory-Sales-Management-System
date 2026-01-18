@@ -1,5 +1,5 @@
 import { usePricesContext } from "./contextReducer/PriceContexts";
-import type { PriceType } from "../../../../types";
+import type { PriceType } from "../../../../helpers/types";
 
 const LatestPrice = () => {
   const prices = usePricesContext();

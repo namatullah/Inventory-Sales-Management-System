@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getProducts } from "../../../lib/product";
-import type { ProductType } from "../../../types";
+import type { ProductType } from "../../../helpers/types";
 import { useAuth } from "../../../context/AuthContext";
 import { createSales } from "../../../lib/sale";
 import ApiError from "../../common/ApiError";

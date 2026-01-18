@@ -17,7 +17,7 @@ import {
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import Form from "./Form";
-import type { CategoryType } from "../../../types";
+import type { CategoryType } from "../../../helpers/types";
 import { deleteCategory, fetchCategories } from "../../../lib/category";
 import ApiError from "../../common/ApiError";
 import DeleteData from "../../common/DeleteData";

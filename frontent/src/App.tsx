@@ -10,6 +10,7 @@ import Category from "./components/pages/category/Category";
 import Users from "./components/pages/users/Users";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/layouts/ProtectedRoutes";
 
 export default function App() {
   return (
@@ -18,10 +19,12 @@ export default function App() {
         <Routes>
           <Route element={<AppLayout />}>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/product" element={<Product />} />
             <Route path="/sales" element={<Sales />} />
-            <Route path="/category" element={<Category />} />
-            <Route path="/users" element={<Users />} />
+            <Route path="/product" element={<Product />} />
+            <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+              <Route path="/category" element={<Category />} />
+              <Route path="/users" element={<Users />} />
+            </Route>
           </Route>
           <Route element={<AuthLayout />}>
             <Route path="/signin" element={<SignIn />} />

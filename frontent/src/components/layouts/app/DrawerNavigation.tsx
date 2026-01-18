@@ -13,7 +13,9 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CssBaseline from "@mui/material/CssBaseline";
 import DrawerMenu from "./DrawerMenu";
 import AppNavigation from "./AppNavigation";
-import { ProductionQuantityLimitsOutlined } from "@mui/icons-material";
+import {
+  ProductionQuantityLimitsOutlined,
+} from "@mui/icons-material";
 
 export const drawerWidth = 240;
 
@@ -89,7 +91,9 @@ const DrawerNavigation = () => {
       <CssBaseline />
       <AppNavigation open={open} handleDrawerOpen={handleDrawerOpen} />
       <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
+        <DrawerHeader
+          sx={{ display: "flex", justifyContent: "space-between", px: 2.4 }}
+        >
           <ProductionQuantityLimitsOutlined color="primary" />
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (

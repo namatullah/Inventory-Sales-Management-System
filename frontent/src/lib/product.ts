@@ -1,4 +1,4 @@
-import type { PaginationType, ProductType } from "../types";
+import type { PaginationType, ProductType } from "../helpers/types";
 import api from "./axios";
 
 export const fetchProducts = (pagination: PaginationType) => {

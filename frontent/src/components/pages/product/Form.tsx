@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import type { CategoryType, ProductType } from "../../../types";
+import type { CategoryType, ProductType } from "../../../helpers/types";
 import ApiError from "../../common/ApiError";
 import { createProduct, updateProduct } from "../../../lib/product";
 import { getCategories } from "../../../lib/category";

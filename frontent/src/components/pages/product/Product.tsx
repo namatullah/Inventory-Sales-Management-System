@@ -18,7 +18,7 @@ import {
 import { useEffect, useState } from "react";
 import ApiError from "../../common/ApiError";
 import { deleteProduct, fetchProducts } from "../../../lib/product";
-import type { ProductType } from "../../../types";
+import type { ProductType } from "../../../helpers/types";
 import Form from "./Form";
 import DeleteData from "../../common/DeleteData";
 import Price from "./price/Price";

@@ -9,7 +9,7 @@ import {
 import { adminAuth, protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
-router.get("/", fetchCategories);
+router.get("/",protect, fetchCategories);
 router.get("/list", getCategories);
 router.post("/", protect, adminAuth, createCategory);
 router.put("/:id", protect, adminAuth, updateCategory);

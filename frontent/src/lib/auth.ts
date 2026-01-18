@@ -1,4 +1,4 @@
-import type { UserType } from "../types";
+import type { UserType } from "../helpers/types";
 import api from "./axios";
 
 export const signup = (data: UserType) => api.post("/auth/signup", data);

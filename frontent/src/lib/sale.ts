@@ -1,4 +1,4 @@
-import type { PaginationType } from "../types";
+import type { PaginationType } from "../helpers/types";
 import api from "./axios";
 
 export const getSales = (pagination: PaginationType) =>

@@ -1,6 +1,6 @@
 import moment from "moment";
 import { AddOutlined, CloseOutlined, DeleteForever } from "@mui/icons-material";
-import type { PriceType, ProductType } from "../../../../types";
+import type { PriceType, ProductType } from "../../../../helpers/types";
 import {
   Box,
   Dialog,

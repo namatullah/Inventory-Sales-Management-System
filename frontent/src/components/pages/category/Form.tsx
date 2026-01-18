@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { createCategory, updateCategory } from "../../../lib/category";
 import toast from "react-hot-toast";
-import type { CategoryType } from "../../../types";
+import type { CategoryType } from "../../../helpers/types";
 import ApiError from "../../common/ApiError";
 
 const Form = ({

@@ -7,7 +7,7 @@ import {
 } from "react";
 import PriceReducer from "./PriceReducer";
 import { fetchPrices } from "../../../../../lib/price";
-import type { PriceType } from "../../../../../types";
+import type { PriceType } from "../../../../../helpers/types";
 
 const PricesContext = createContext<PriceType[]>([]);
 const PricesDispatchContext = createContext<any>(null);

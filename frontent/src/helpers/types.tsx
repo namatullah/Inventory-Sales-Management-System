@@ -49,3 +49,10 @@ export interface PaginationType {
   page: number;
   rowsPerPage: number;
 }
+
+export interface MenuItem {
+  label: string;
+  path: string;
+  icon: React.ReactNode;
+  roles: ("admin" | "staff")[];
+}

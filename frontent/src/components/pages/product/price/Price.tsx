@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { ProductType } from "../../../../types";
+import type { ProductType } from "../../../../helpers/types";
 import { PreviewOutlined } from "@mui/icons-material";
 import PriceList from "./PriceList";
 import { PriceProvider } from "./contextReducer/PriceContexts";
