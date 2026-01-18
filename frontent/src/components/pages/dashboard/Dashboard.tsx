@@ -1,9 +1,7 @@
-import {
-  Grid,
-} from "@mui/material";
+import { Grid } from "@mui/material";
 import PagesButton from "./childs/PagesButton";
-import ProductSale from "./childs/SalesPerQuantity";
-import SalesPerQuantity from "./childs/SalesPerQuantity";
+import UserSalesPerQuantity from "./childs/UserSalesPerQuantity";
+import UserSalesPerAmount from "./childs/UserSalesPerAmount";
 
 const Dashboard = () => {
   return (
@@ -12,10 +10,10 @@ const Dashboard = () => {
       <br />
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid size={{ sm: 12, md: 6 }}>
-          <SalesPerQuantity />
+          <UserSalesPerQuantity />
         </Grid>
         <Grid size={{ sm: 12, md: 6 }}>
-          <ProductSale />
+          <UserSalesPerAmount />
         </Grid>
       </Grid>
       <br />

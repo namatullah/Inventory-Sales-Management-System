@@ -1,10 +1,10 @@
 import { Card, CardContent } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
-import { getUserQuantitySale } from "../../../../lib/report";
-import { COLORS, monthNames } from "../../../../helpers/helper";
+import { getUserSalesPerQuantity } from "../../../../lib/report";
+import { COLORS, getColor, monthNames } from "../../../../helpers/helper";
 
-const SalesPerQuantity = ({
+const UserSalesPerQuantity = ({
   isAnimationActive = true,
 }: {
   isAnimationActive?: boolean;
@@ -18,7 +18,7 @@ const SalesPerQuantity = ({
 
   const fetchUserQuantitySale = async () => {
     try {
-      const { data } = await getUserQuantitySale();
+      const { data } = await getUserSalesPerQuantity();
 
       const chartData = data.map((item: any) => ({
         name: item.sellerName,
@@ -36,24 +36,25 @@ const SalesPerQuantity = ({
 
   return (
     <Card elevation={2}>
-      <CardContent>
-        <h3>
+      <CardContent sx={{ alignContent: "center", justifyContent: "center" }}>
+        <h4>
           Sale quantity per Sellers, for the current month(
-          {monthNames[currentMonth]} - {currentYear}):
-        </h3>
+          {monthNames[currentMonth]} - {currentYear})
+        </h4>
         <PieChart width={400} height={400}>
           <Pie
             activeShape={{
-              fill: "red",
+              fill: "yellow",
             }}
             data={data}
             dataKey="totalItemsSold"
             isAnimationActive={isAnimationActive}
             outerRadius={150}
+            name="Quantity"
           >
             {data &&
               data.map((entry, index) => (
-                <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
+                <Cell key={entry.name} fill={getColor(index)} />
               ))}
           </Pie>
           <Tooltip defaultIndex={2} />
@@ -62,4 +63,4 @@ const SalesPerQuantity = ({
     </Card>
   );
 };
-export default SalesPerQuantity;
+export default UserSalesPerQuantity;

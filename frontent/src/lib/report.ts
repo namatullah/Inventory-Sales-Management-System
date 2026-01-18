@@ -1,3 +1,4 @@
 import api from "./axios";
 
-export const getUserQuantitySale = () => api.get("/reports");
+export const getUserSalesPerQuantity = () => api.get("/reports/user_sales_per_quantity");
+export const getUserSalesPerAmount = () => api.get("/reports/user_sales_per_amount");
