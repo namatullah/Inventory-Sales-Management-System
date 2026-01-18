@@ -1,19 +1,24 @@
 import User from "../models/User.js";
 
 const getUsers = async (req, res) => {
-  const { limit, page } = req.query;
+  const { limit = 10, page = 1 } = req.query;
   const limitNum = parseInt(limit, 10);
   const pageNum = parseInt(page, 10);
   const skip = (pageNum - 1) * limitNum;
+  const user = req.user;
+
   try {
-    const users = await User.find()
+    const users = await User.find({ _id: { $ne: user._id } })
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limitNum);
-    if (!users) {
-      return res.status(400).json({ message: "users not found" });
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: "Users not found" });
     }
-    const total = await User.countDocuments();
+
+    const total = await User.countDocuments({ _id: { $ne: user._id } });
+
     res.status(200).json({ data: users, total });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });

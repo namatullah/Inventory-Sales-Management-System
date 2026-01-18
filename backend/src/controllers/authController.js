@@ -32,7 +32,8 @@ const signup = async (req, res) => {
     if (existUser) {
       return res.status(400).json({ message: "User already exist" });
     }
-    const hashedPassword = generateHash(password);
+    const hashedPassword = await generateHash(password);
+    console.log(hashedPassword);
     const role =
       adminInviteToken && adminInviteToken == process.env.ADMIN_INVITE_TOKEN
         ? "admin"

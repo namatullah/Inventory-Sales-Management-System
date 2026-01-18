@@ -50,7 +50,7 @@ const getUserSalesPerQuantity = async (req, res) => {
     ]);
 
     if (sales.length === 0) {
-      return res.status(400).json({ message: "No sales found" });
+      return res.status(400).json({ message: "No data found" });
     }
     res.status(200).json(sales);
   } catch (error) {
@@ -103,7 +103,7 @@ const getUserSalesPerAmount = async (req, res) => {
     ]);
 
     if (sales.length === 0) {
-      return res.status(400).json({ message: "No sales found" });
+      return res.status(400).json({ message: "No data found" });
     }
     res.status(200).json(sales);
   } catch (error) {

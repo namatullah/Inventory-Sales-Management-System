@@ -1,17 +1,9 @@
 import { Card, CardContent } from "@mui/material";
 import { useEffect, useState } from "react";
-import {
-  Bar,
-  BarChart,
-  Cell,
-  Pie,
-  PieChart,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Bar, BarChart, Cell, Tooltip, XAxis, YAxis } from "recharts";
 import { getUserSalesPerAmount } from "../../../../lib/report";
-import { COLORS, getColor, monthNames } from "../../../../helpers/helper";
+import { getColor, monthNames } from "../../../../helpers/helper";
+import ApiError from "../../../common/ApiError";
 
 const UserSalesPerAmount = ({
   isAnimationActive = true,
@@ -21,6 +13,7 @@ const UserSalesPerAmount = ({
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth();
+  const [apiError, setApiError] = useState<string>("");
 
   const [data, setData] =
     useState<[{ name: string; totalItemsSold: number }]>();
@@ -34,8 +27,12 @@ const UserSalesPerAmount = ({
         value: item.totalAmount,
       }));
       setData(chartData);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      setApiError(
+        error.response?.data?.message
+          ? error.response?.data?.message
+          : "Deletion failed"
+      );
     }
   };
 
@@ -51,35 +48,39 @@ const UserSalesPerAmount = ({
           {monthNames[currentMonth]} - {currentYear})
         </h4>
         <br />
-        <BarChart
-          style={{
-            width: "100%",
-            maxWidth: "800px",
-            maxHeight: "80vh",
-            aspectRatio: 1.618,
-          }}
-          responsive
-          data={data}
-        >
-          <XAxis dataKey="name" />
-          <YAxis
-            label={{
-              value: "Total Sales [Afghani]",
-              position: "insideLeft",
-              dx: 0,
-              dy: 20,
-              angle: -90,
+        {apiError ? (
+          <ApiError apiError={apiError} />
+        ) : (
+          <BarChart
+            style={{
+              width: "100%",
+              maxWidth: "800px",
+              maxHeight: "80vh",
+              aspectRatio: 1.618,
             }}
-          />
-          <Tooltip />
+            responsive
+            data={data}
+          >
+            <XAxis dataKey="name" />
+            <YAxis
+              label={{
+                value: "Total Sales [Afghani]",
+                position: "insideLeft",
+                dx: 0,
+                dy: 20,
+                angle: -90,
+              }}
+            />
+            <Tooltip />
 
-          <Bar dataKey="value" name="Total Sales">
-            {data &&
-              data.map((entry, index) => (
-                <Cell key={entry.name} fill={getColor(index)} />
-              ))}
-          </Bar>
-        </BarChart>
+            <Bar dataKey="value" name="Total Sales">
+              {data &&
+                data.map((entry, index) => (
+                  <Cell key={entry.name} fill={getColor(index)} />
+                ))}
+            </Bar>
+          </BarChart>
+        )}
       </CardContent>
     </Card>
   );
