@@ -7,11 +7,11 @@ const signin = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: "Invalid Email" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
     const passwordMatch = verifyPassword(password, user.password);
     if (!passwordMatch) {
-      return res.status(401).json({ message: "Invalid Password" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
     res.status(200).json({
       _id: user._id,

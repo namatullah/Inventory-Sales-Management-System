@@ -22,13 +22,13 @@ export interface ProductType {
 }
 
 export interface UserType {
-  _id: string;
-  name: string;
+  _id?: string;
+  name?: string;
   email: string;
-  role: string;
   password: string;
-  createdAt: string | Date;
-  updatedAt: string | Date;
+  role?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
 
 export interface SaleItemType {
