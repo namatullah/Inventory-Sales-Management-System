@@ -34,7 +34,7 @@ export interface UserType {
 export interface SaleItemType {
   priceAtSale: number;
   quantity: number;
-  productId: ProductType | string;
+  productId: ProductType | any;
 }
 
 export interface SaleType {

@@ -25,6 +25,7 @@ import Price from "./price/Price";
 import toast from "react-hot-toast";
 import Stock from "./stock/Stock";
 import { StockProvider } from "./stock/contextReducer/StockContexts";
+import { PAGINATION } from "../../../helpers/helper";
 const Product = () => {
   const [open, setOpen] = useState(false);
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -32,8 +33,8 @@ const Product = () => {
   const [apiError, setApiError] = useState<string>("");
 
   const [paginantion, setPagination] = useState({
-    page: 0,
-    rowsPerPage: 5,
+    page: PAGINATION.PAGE,
+    rowsPerPage: PAGINATION.ROWS_PER_PAGE,
   });
   const [total, setTotal] = useState(0);
 
@@ -50,7 +51,7 @@ const Product = () => {
     setPagination({
       ...paginantion,
       rowsPerPage: parseInt(event.target.value),
-      page: 0,
+      page: PAGINATION.PAGE,
     });
   };
 
@@ -202,7 +203,7 @@ const Product = () => {
             <TableRow>
               <TableCell colSpan={6}>
                 <TablePagination
-                  rowsPerPageOptions={[5, 10]}
+                  rowsPerPageOptions={PAGINATION.ROWS_PER_PAGE_OPTIONS}
                   component="div"
                   count={total}
                   page={paginantion.page}

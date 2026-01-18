@@ -17,6 +17,8 @@ import toast from "react-hot-toast";
 import { deleteUser, fetchUsers } from "../../../lib/users";
 import { useAuth } from "../../../context/AuthContext";
 import moment from "moment";
+import type { UserType } from "../../../helpers/types";
+import { PAGINATION } from "../../../helpers/helper";
 const Users = () => {
   const { user } = useAuth();
   const [users, setUsers] = useState<any>([]);
@@ -25,8 +27,8 @@ const Users = () => {
   const [apiError, setApiError] = useState<string>("");
 
   const [paginantion, setPagination] = useState({
-    page: 0,
-    rowsPerPage: 5,
+    page: PAGINATION.PAGE,
+    rowsPerPage: PAGINATION.ROWS_PER_PAGE,
   });
   const [total, setTotal] = useState(0);
 
@@ -43,7 +45,7 @@ const Users = () => {
     setPagination({
       ...paginantion,
       rowsPerPage: parseInt(event.target.value),
-      page: 0,
+      page: PAGINATION.PAGE,
     });
   };
 
@@ -136,7 +138,7 @@ const Users = () => {
           </TableHead>
           <TableBody>
             {users
-              .filter((u: any) => u._id !== user._id)
+              .filter((u: UserType) => u._id !== user?._id)
               .map((u: any) => (
                 <TableRow key={u._id}>
                   <TableCell>{u.name}</TableCell>
@@ -163,7 +165,7 @@ const Users = () => {
             <TableRow>
               <TableCell colSpan={5}>
                 <TablePagination
-                  rowsPerPageOptions={[5, 10]}
+                  rowsPerPageOptions={PAGINATION.ROWS_PER_PAGE_OPTIONS}
                   component="div"
                   count={total}
                   page={paginantion.page}

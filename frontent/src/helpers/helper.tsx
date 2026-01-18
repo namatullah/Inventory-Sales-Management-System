@@ -46,3 +46,8 @@ export const menuItems: MenuItem[] = [
     roles: ["admin", "staff"],
   },
 ];
+export const PAGINATION = {
+  PAGE: 0,
+  ROWS_PER_PAGE: 5,
+  ROWS_PER_PAGE_OPTIONS: [5, 10],
+};

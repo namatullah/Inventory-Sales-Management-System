@@ -18,14 +18,15 @@ import { getSales } from "../../../lib/sale";
 import Items from "./Items";
 import moment from "moment";
 import type { PaginationType, SaleType } from "../../../helpers/types";
+import { PAGINATION } from "../../../helpers/helper";
 const Sales = () => {
   const [open, setOpen] = useState(false);
   const [sales, setSales] = useState<SaleType[]>([]);
   const [apiError, setApiError] = useState<string>("");
 
   const [paginantion, setPagination] = useState<PaginationType>({
-    page: 0,
-    rowsPerPage: 5,
+    page: PAGINATION.PAGE,
+    rowsPerPage: PAGINATION.ROWS_PER_PAGE,
   });
   const [total, setTotal] = useState(0);
 
@@ -42,7 +43,7 @@ const Sales = () => {
     setPagination({
       ...paginantion,
       rowsPerPage: parseInt(event.target.value),
-      page: 0,
+      page: PAGINATION.PAGE,
     });
   };
 
@@ -138,7 +139,7 @@ const Sales = () => {
             <TableRow>
               <TableCell colSpan={5}>
                 <TablePagination
-                  rowsPerPageOptions={[5, 10]}
+                  rowsPerPageOptions={PAGINATION.ROWS_PER_PAGE_OPTIONS}
                   component="div"
                   count={total}
                   page={paginantion.page}

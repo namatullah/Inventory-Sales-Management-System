@@ -1,6 +1,8 @@
-const Items = ({ items }: { items: any }) => {
+import type { SaleItemType } from "../../../helpers/types";
+
+const Items = ({ items }: { items: SaleItemType[] }) => {
   let itemsTxt = "";
-  items.map((item: any) => {
+  items.map((item: SaleItemType) => {
     itemsTxt += item.quantity + "* " + item.productId.name + ", ";
   });
   return (

@@ -69,7 +69,7 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      await createSales({ userId: user._id, rows });
+      await createSales({ userId: user?._id, rows });
       onClose();
     } catch (error: any) {
       setApiError(
