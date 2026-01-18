@@ -17,12 +17,19 @@ import Form from "./Form";
 import { getSales } from "../../../lib/sale";
 import Items from "./Items";
 import moment from "moment";
-import type { PaginationType, SaleType } from "../../../helpers/types";
+import type {
+  PaginationType,
+  SaleItemType,
+  SaleType,
+} from "../../../helpers/types";
 import { PAGINATION } from "../../../helpers/helper";
+import View from "./View";
 const Sales = () => {
   const [open, setOpen] = useState(false);
   const [sales, setSales] = useState<SaleType[]>([]);
   const [apiError, setApiError] = useState<string>("");
+  const [openDelete, setOpenDelete] = useState(false);
+  const [items, setItems] = useState<SaleItemType[]>([]);
 
   const [paginantion, setPagination] = useState<PaginationType>({
     page: PAGINATION.PAGE,
@@ -50,6 +57,9 @@ const Sales = () => {
   const handleOpenClose = () => {
     setOpen(!open);
   };
+  const handleOpenCloseDelete = () => {
+    setOpenDelete(!open);
+  };
 
   const getCategories = async () => {
     setApiError("");
@@ -69,9 +79,13 @@ const Sales = () => {
   useEffect(() => {
     getCategories();
   }, [open, paginantion.page, paginantion.rowsPerPage]);
+
   return (
     <>
       {open && <Form open={open} onClose={handleOpenClose} />}
+      {openDelete && (
+        <View open={openDelete} onClose={setOpenDelete} items={items} />
+      )}
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
@@ -129,7 +143,10 @@ const Sales = () => {
                   <Button
                     size="small"
                     variant="outlined"
-                    onClick={handleOpenClose}
+                    onClick={() => {
+                      setItems(sale.items);
+                      handleOpenCloseDelete();
+                    }}
                     startIcon={<PreviewOutlined />}
                   >
                     <span style={{ paddingTop: "inherit" }}>View</span>
