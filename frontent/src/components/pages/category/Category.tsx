@@ -131,6 +131,7 @@ const Category = () => {
                 >
                   <Typography sx={{ fontSize: "20px" }}>Categories</Typography>
                   <Button
+                    size="small"
                     variant="outlined"
                     onClick={handleOpenClose}
                     startIcon={<AddOutlined />}
@@ -154,14 +155,24 @@ const Category = () => {
               <TableRow key={category._id}>
                 <TableCell>{category.name}</TableCell>
                 <TableCell>
-                  <EditNoteOutlined
-                    color="primary"
+                  <Button
+                    size="small"
+                    variant="outlined"
                     onClick={() => handleUpdate(category)}
-                  />
-                  <DeleteForever
-                    color="error"
+                    startIcon={<EditNoteOutlined />}
+                    sx={{ mx: 1 }}
+                  >
+                    <span style={{ paddingTop: "inherit" }}>Edit</span>
+                  </Button>
+
+                  <Button
+                    size="small"
+                    variant="outlined"
                     onClick={() => handleDelete(category)}
-                  />
+                    startIcon={<DeleteForever color="error" />}
+                  >
+                    <span style={{ paddingTop: "inherit" }}>Delete</span>
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

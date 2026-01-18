@@ -15,7 +15,7 @@ interface AuthContextType {
   register: (data: UserType) => Promise<any>;
   logout: () => void;
   isAuthenticated: boolean;
-  adminAuth: () => boolean;
+  isAdmin: boolean;
 }
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -78,16 +78,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     navigate("/signin");
   };
-  const adminAuth = () => {
-    return user?.role === "admin";
-  };
   const value = {
     user,
     login,
     logout,
     register,
     loading,
-    adminAuth,
+    isAdmin: user?.role === "admin",
     isAuthenticated: !!user,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

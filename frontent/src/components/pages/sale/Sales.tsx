@@ -86,6 +86,7 @@ const Sales = () => {
                 >
                   <Typography sx={{ fontSize: "20px" }}>Sales</Typography>
                   <Button
+                    size="small"
                     variant="outlined"
                     onClick={handleOpenClose}
                     startIcon={<AddOutlined />}
@@ -125,7 +126,14 @@ const Sales = () => {
                 </TableCell>
                 <TableCell>{sale.totalAmount} Af</TableCell>
                 <TableCell>
-                  <PreviewOutlined color="primary" />
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    onClick={handleOpenClose}
+                    startIcon={<PreviewOutlined />}
+                  >
+                    <span style={{ paddingTop: "inherit" }}>View</span>
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

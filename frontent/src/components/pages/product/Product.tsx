@@ -26,7 +26,10 @@ import toast from "react-hot-toast";
 import Stock from "./stock/Stock";
 import { StockProvider } from "./stock/contextReducer/StockContexts";
 import { PAGINATION } from "../../../helpers/helper";
+import { useAuth } from "../../../context/AuthContext";
 const Product = () => {
+  const { isAdmin } = useAuth();
+
   const [open, setOpen] = useState(false);
   const [products, setProducts] = useState<ProductType[]>([]);
   const [product, setProduct] = useState<ProductType | null>(null);
@@ -133,6 +136,8 @@ const Product = () => {
                 >
                   <Typography sx={{ fontSize: "20px" }}>Products</Typography>
                   <Button
+                    size="small"
+                    disabled={!isAdmin}
                     variant="outlined"
                     onClick={handleOpenClose}
                     startIcon={<AddOutlined />}
@@ -170,14 +175,25 @@ const Product = () => {
                 <TableCell>{product.sku}</TableCell>
                 <TableCell>{product?.category?.name}</TableCell>
                 <TableCell>
-                  <EditNoteOutlined
-                    color="primary"
+                  <Button
+                    size="small"
+                    disabled={!isAdmin}
+                    variant="outlined"
                     onClick={() => handleUpdate(product)}
-                  />
-                  <DeleteForever
-                    color="error"
+                    startIcon={<EditNoteOutlined />}
+                    sx={{ mx: 1 }}
+                  >
+                    <span style={{ paddingTop: "inherit" }}>Edit</span>
+                  </Button>
+                  <Button
+                    size="small"
+                    disabled={!isAdmin}
+                    variant="outlined"
                     onClick={() => handleDelete(product)}
-                  />
+                    startIcon={<DeleteForever color="error" />}
+                  >
+                    <span style={{ paddingTop: "inherit" }}>Delete</span>
+                  </Button>
                 </TableCell>
                 <TableCell>
                   <StockProvider

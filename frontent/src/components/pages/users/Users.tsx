@@ -1,4 +1,5 @@
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -91,7 +92,6 @@ const Users = () => {
       );
     }
   };
-  console.log(user, users);
   return (
     <>
       {openDelete && (
@@ -148,10 +148,14 @@ const Users = () => {
                     {moment(u.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
                   </TableCell>
                   <TableCell>
-                    <DeleteForever
-                      color="error"
+                    <Button
+                      size="small"
+                      variant="outlined"
                       onClick={() => handleDelete(u)}
-                    />
+                      startIcon={<DeleteForever color="error" />}
+                    >
+                      <span style={{ paddingTop: "inherit" }}>Delete</span>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
