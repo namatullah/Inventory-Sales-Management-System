@@ -40,13 +40,21 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
     fetchProducts();
   }, []);
   const [rows, setRows] = useState<any>([
-    { productId: "", price: 0, quantity: 1, total: 0 },
+    { productId: "", price: 0, quantity: 1, total: 0, stockUnit: "" },
   ]);
   // add new row
   const addRow = () => {
-    setRows([...rows, { productId: "", price: 0, quantity: 1, total: 0 }]);
+    setRows([
+      ...rows,
+      { productId: "", price: 0, quantity: 1, total: 0, stockUnit: "" },
+    ]);
   };
-  const handleChange = (index: number, field: string, value: any) => {
+  const handleChange = (
+    index: number,
+    field: string,
+    value: any,
+    stockUnit: string
+  ) => {
     const updated = [...rows];
     updated[index][field] = value;
 
@@ -54,10 +62,11 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
     const quantity = Number(updated[index].quantity);
 
     updated[index].total = price * quantity;
-
+    if (stockUnit !== "") {
+      updated[index].stockUnit = stockUnit;
+    }
     setRows(updated);
   };
-  // remove row
   const removeRow = (index: any) => {
     const updated = [...rows];
     updated.splice(index, 1);
@@ -121,8 +130,13 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                           const product: any = prods.find(
                             (p) => p._id === e.target.value
                           );
-                          handleChange(index, "productId", e.target.value);
-                          handleChange(index, "price", product?.price || 0);
+                          handleChange(
+                            index,
+                            "productId",
+                            e.target.value,
+                            product.stockUnit
+                          );
+                          handleChange(index, "price", product?.price || 0, "");
                         }}
                       >
                         {prods.map((product: ProductType) => (
@@ -132,27 +146,43 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                         ))}
                       </TextField>
                     </TableCell>
-                    {/* QUANTITY */}
-                    <TableCell>
-                      <TextField
-                        type="text"
-                        name="quantity"
-                        label="Quantity"
-                        variant="outlined"
-                        size="small"
-                        fullWidth
-                        value={row.quantity}
-                        onChange={(e) =>
-                          handleChange(index, "quantity", e.target.value)
-                        }
-                        inputProps={{
-                          inputMode: "numeric",
-                          pattern: "[0-9]*",
+                    <TableCell width="35%">
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
                         }}
-                      />
+                      >
+                        <TextField
+                          type="text"
+                          name="quantity"
+                          label="Quantity"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={row.quantity}
+                          onChange={(e) =>
+                            handleChange(index, "quantity", e.target.value, "")
+                          }
+                          inputProps={{
+                            inputMode: "numeric",
+                            pattern: "[0-9]*",
+                          }}
+                        />
+                        <TextField
+                          type="text"
+                          name="stockUnit"
+                          label="Stock Unit"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={row.stockUnit}
+                          disabled
+                          sx={{ px: 1 }}
+                        />
+                      </div>
                     </TableCell>
 
-                    {/* TOTAL */}
                     <TableCell>
                       <TextField
                         type="text"
@@ -165,7 +195,6 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                         disabled
                       />
                     </TableCell>
-                    {/* DELETE */}
                     <TableCell>
                       {index !== 0 && (
                         <CloseOutlined

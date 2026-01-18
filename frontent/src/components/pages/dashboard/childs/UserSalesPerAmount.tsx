@@ -47,39 +47,45 @@ const UserSalesPerAmount = ({
           Total Amount sold per Sellers, for the current month(
           {monthNames[currentMonth]} - {currentYear})
         </h4>
-        <br />
         {apiError ? (
           <ApiError apiError={apiError} />
         ) : (
-          <BarChart
-            style={{
-              width: "100%",
-              maxWidth: "800px",
-              maxHeight: "80vh",
-              aspectRatio: 1.618,
-            }}
-            responsive
-            data={data}
-          >
-            <XAxis dataKey="name" />
-            <YAxis
-              label={{
-                value: "Total Sales [Afghani]",
-                position: "insideLeft",
-                dx: 0,
-                dy: 20,
-                angle: -90,
+          <>
+            <BarChart
+              style={{
+                width: "100%",
+                maxWidth: "800px",
+                maxHeight: "80vh",
+                aspectRatio: 1.618,
               }}
-            />
-            <Tooltip />
+              responsive
+              data={data}
+            >
+              <XAxis dataKey="name" />
+              <YAxis
+                label={{
+                  value: "Total Sales [Afghani]",
+                  position: "insideLeft",
+                  dx: 0,
+                  dy: 20,
+                  angle: -90,
+                }}
+              />
+              <Tooltip />
 
-            <Bar dataKey="value" name="Total Sales">
-              {data &&
-                data.map((entry, index) => (
-                  <Cell key={entry.name} fill={getColor(index)} />
-                ))}
-            </Bar>
-          </BarChart>
+              <Bar
+                dataKey="value"
+                name="Total Sales"
+                isAnimationActive={isAnimationActive}
+              >
+                {data &&
+                  data.map((entry, index) => (
+                    <Cell key={entry.name} fill={getColor(index)} />
+                  ))}
+              </Bar>
+            </BarChart>
+            <br />
+          </>
         )}
       </CardContent>
     </Card>

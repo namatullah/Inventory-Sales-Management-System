@@ -189,15 +189,12 @@ const SignUp = () => {
           >
             Sign Up
           </Button>
-          {apiError ? (
-            <ApiError apiError={apiError} />
-          ) : (
-            <Grid>
-              <Button onClick={() => navigate("/signin")}>
-                Already have an account? Sign In
-              </Button>
-            </Grid>
-          )}
+          {apiError && <ApiError apiError={apiError} />}
+          <Grid>
+            <Button onClick={() => navigate("/signin")}>
+              Already have an account? Sign In
+            </Button>
+          </Grid>
         </form>
       </Paper>
     </Container>

@@ -13,7 +13,7 @@ const getSales = async (req, res) => {
       .populate("soldBy", "name email") // user info
       .populate({
         path: "items.productId",
-        select: "name sku",
+        select: "name sku stockUnit",
       })
       .sort({ createdAt: -1 })
       .skip(skip)
