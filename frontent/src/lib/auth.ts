@@ -12,4 +12,7 @@ export const me = (token: string | any) =>
 export const updateUser = (
   id: string | any,
   data: { name: string; email: string }
-) => api.put("/auth/" + id, data);
+) => api.put("/auth/" + id + "/update_profile", data);
+
+export const changePassword = (id: string | any, data: { password: string }) =>
+  api.put("/auth/" + id + "/change_password", data);
