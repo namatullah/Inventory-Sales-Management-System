@@ -21,8 +21,8 @@ import { useEffect, useState } from "react";
 import { getProducts } from "../../../lib/product";
 import type { ProductType } from "../../../helpers/types";
 import { useAuth } from "../../../context/AuthContext";
-import { createSales } from "../../../lib/sale";
 import ApiError from "../../common/ApiError";
+import { createSales } from "../../../lib/sale";
 
 const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const { user } = useAuth();
@@ -39,10 +39,11 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   useEffect(() => {
     fetchProducts();
   }, []);
+
   const [rows, setRows] = useState<any>([
     { productId: "", price: 0, quantity: 1, total: 0, stockUnit: "" },
   ]);
-  // add new row
+
   const addRow = () => {
     setRows([
       ...rows,
@@ -75,8 +76,38 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 
   const grandTotal = rows.reduce((sum: number, row: any) => sum + row.total, 0);
 
+  type RowError = {
+    productId?: string;
+    quantity?: string;
+  };
+  const [errors, setErrors] = useState<RowError[]>([]);
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    const newErrors: RowError[] = [];
+
+    rows.forEach((row: any, index: number) => {
+      const rowErrors: RowError = {};
+
+      if (!row.productId) {
+        rowErrors.productId = "Select a product please";
+      }
+
+      if (!row.quantity || Number(row.quantity) <= 0) {
+        rowErrors.quantity = "Quantity is required";
+      }
+
+      if (Object.keys(rowErrors).length > 0) {
+        newErrors[index] = rowErrors;
+      }
+    });
+
+    setErrors(newErrors);
+
+    // stop submit if any error exists
+    if (newErrors.length > 0) return;
+
     try {
       await createSales({ userId: user?._id, rows });
       onClose();
@@ -126,6 +157,8 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                         size="small"
                         value={row.productId}
                         fullWidth
+                        error={Boolean(errors[index]?.productId)}
+                        helperText={errors[index]?.productId}
                         onChange={(e) => {
                           const product: any = prods.find(
                             (p) => p._id === e.target.value
@@ -146,7 +179,7 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                         ))}
                       </TextField>
                     </TableCell>
-                    <TableCell width="35%">
+                    <TableCell width="45%">
                       <div
                         style={{
                           display: "flex",
@@ -161,6 +194,8 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                           size="small"
                           fullWidth
                           value={row.quantity}
+                          error={Boolean(errors[index]?.quantity)}
+                          helperText={errors[index]?.quantity}
                           onChange={(e) =>
                             handleChange(index, "quantity", e.target.value, "")
                           }
@@ -175,7 +210,6 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                           label="Stock Unit"
                           variant="outlined"
                           size="small"
-                          fullWidth
                           value={row.stockUnit}
                           disabled
                           sx={{ px: 1 }}
