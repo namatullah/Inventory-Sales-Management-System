@@ -1,18 +1,15 @@
 import {
   Box,
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
-  IconButton,
   ListItem,
   ListItemText,
   Typography,
 } from "@mui/material";
 import type { SaleItemType } from "../../../helpers/types";
-import { CloseOutlined, DeleteForever } from "@mui/icons-material";
+import { CloseOutlined } from "@mui/icons-material";
 import { Fragment } from "react/jsx-runtime";
 
 const View = ({

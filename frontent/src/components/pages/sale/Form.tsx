@@ -39,7 +39,6 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   useEffect(() => {
     fetchProducts();
   }, []);
-
   const [rows, setRows] = useState<any>([
     { productId: "", price: 0, quantity: 1, total: 0, stockUnit: "" },
   ]);
@@ -84,30 +83,22 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
     const newErrors: RowError[] = [];
-
     rows.forEach((row: any, index: number) => {
       const rowErrors: RowError = {};
-
       if (!row.productId) {
         rowErrors.productId = "Select a product please";
       }
-
       if (!row.quantity || Number(row.quantity) <= 0) {
         rowErrors.quantity = "Quantity is required";
       }
-
       if (Object.keys(rowErrors).length > 0) {
         newErrors[index] = rowErrors;
       }
     });
-
     setErrors(newErrors);
-
     // stop submit if any error exists
     if (newErrors.length > 0) return;
-
     try {
       await createSales({ userId: user?._id, rows });
       onClose();
@@ -160,23 +151,56 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                         error={Boolean(errors[index]?.productId)}
                         helperText={errors[index]?.productId}
                         onChange={(e) => {
+                          const selectedId = e.target.value;
+
                           const product: any = prods.find(
-                            (p) => p._id === e.target.value
+                            (p) => p._id === selectedId
                           );
+
+                          const existingIndex = rows.findIndex(
+                            (row: any, i: number) =>
+                              row.productId === selectedId && i !== index
+                          );
+
+                          if (existingIndex !== -1) {
+                            const updated = [...rows];
+
+                            updated[existingIndex].quantity =
+                              Number(updated[existingIndex].quantity) + 1;
+
+                            updated[existingIndex].total =
+                              updated[existingIndex].quantity *
+                              updated[existingIndex].price;
+
+                            setRows(updated);
+
+                            return; 
+                          }
+
                           handleChange(
                             index,
                             "productId",
-                            e.target.value,
+                            selectedId,
                             product.stockUnit
                           );
+
                           handleChange(index, "price", product?.price || 0, "");
                         }}
                       >
-                        {prods.map((product: ProductType) => (
-                          <MenuItem key={product._id} value={product._id}>
-                            {product.name} (${product.price})
-                          </MenuItem>
-                        ))}
+                        {prods.map((product: ProductType) => {
+                          const isSelected = rows.some(
+                            (row: any) => row.productId === product._id
+                          );
+                          return (
+                            <MenuItem
+                              key={product._id}
+                              value={product._id}
+                              disabled={isSelected}
+                            >
+                              {product.name} (${product.price})
+                            </MenuItem>
+                          );
+                        })}
                       </TextField>
                     </TableCell>
                     <TableCell width="45%">
