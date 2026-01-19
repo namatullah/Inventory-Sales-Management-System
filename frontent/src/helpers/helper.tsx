@@ -78,3 +78,7 @@ export const monthNames = [
 export function getColor(index: number) {
   return COLORS[index % COLORS.length];
 }
+export const USER_ROLE = {
+  ADMIN: "admin",
+  STAFF: "staff",
+};

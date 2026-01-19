@@ -10,7 +10,14 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { DeleteForever } from "@mui/icons-material";
+import {
+  ChangeCircleOutlined,
+  DeleteForever,
+  EditOutlined,
+  RuleOutlined,
+  SecurityUpdateGoodOutlined,
+  UpdateOutlined,
+} from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import ApiError from "../../common/ApiError";
 import DeleteData from "../../common/DeleteData";
@@ -20,6 +27,7 @@ import { useAuth } from "../../../context/AuthContext";
 import moment from "moment";
 import type { UserType } from "../../../helpers/types";
 import { PAGINATION } from "../../../helpers/helper";
+import ChangeRole from "./ChangeRole";
 const Users = () => {
   const { user } = useAuth();
   const [users, setUsers] = useState<any>([]);
@@ -52,15 +60,23 @@ const Users = () => {
 
   const [openDelete, setOpenDelete] = useState(false);
 
-  const handleDelete = (cat: any) => {
-    setUsr(cat);
+  const handleDelete = (u: UserType) => {
+    setUsr(u);
     setOpenDelete(true);
   };
   const handleCloseDelete = () => {
     setUsr(null);
     setOpenDelete(false);
   };
-
+  const [roleOpen, setRoleOpen] = useState<boolean>(false);
+  const handleRole = (u: UserType) => {
+    setUsr(u);
+    setRoleOpen(true);
+  };
+  const handleCloseRole = () => {
+    setUsr(null);
+    setRoleOpen(false);
+  };
   const getUsers = async () => {
     setApiError("");
     try {
@@ -77,8 +93,9 @@ const Users = () => {
   };
 
   useEffect(() => {
+    if (openDelete || roleOpen) return;
     getUsers();
-  }, [openDelete, paginantion.page, paginantion.rowsPerPage]);
+  }, [openDelete, roleOpen, paginantion.page, paginantion.rowsPerPage]);
 
   const onDelete = async () => {
     try {
@@ -101,6 +118,9 @@ const Users = () => {
           message={"Are you sure to delete user (" + usr?.name + ") ?"}
           deleteFunction={onDelete}
         />
+      )}
+      {roleOpen && (
+        <ChangeRole open={roleOpen} onClose={handleCloseRole} user={usr} />
       )}
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
@@ -143,7 +163,17 @@ const Users = () => {
                 <TableRow key={u._id}>
                   <TableCell>{u.name}</TableCell>
                   <TableCell>{u.email}</TableCell>
-                  <TableCell>{u.role}</TableCell>
+                  <TableCell>
+                    {u.role.toUpperCase()}{" "}
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      onClick={() => handleRole(u)}
+                      startIcon={<RuleOutlined color="error" />}
+                    >
+                      <span style={{ paddingTop: "inherit" }}>Change Role</span>
+                    </Button>
+                  </TableCell>
                   <TableCell>
                     {moment(u.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
                   </TableCell>

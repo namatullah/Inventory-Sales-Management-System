@@ -10,3 +10,5 @@ export const fetchUsers = (pagination: PaginationType) => {
   });
 };
 export const deleteUser = (id: string) => api.delete("/users/" + id);
+export const changeRole = (id: string, data: { role: string }) =>
+  api.put("/users/" + id, data);

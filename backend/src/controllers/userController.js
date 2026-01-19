@@ -33,5 +33,16 @@ const deleteUser = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+const changeRole = async (req, res) => {
+  const { role } = req.body;
+  try {
+    const user = await User.findById({ _id: req.params.id });
+    user.role = role;
+    user.save();
+    res.status(200).json({ message: "User role changed successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
-export { getUsers, deleteUser };
+export { getUsers, deleteUser, changeRole };

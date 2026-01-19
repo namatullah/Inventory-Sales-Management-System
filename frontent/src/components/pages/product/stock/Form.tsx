@@ -52,73 +52,71 @@ const Form = ({
     }
   };
   return (
-    <>
-      <Dialog open={open} maxWidth="xs">
-        <form onSubmit={handleSubmit}>
-          <DialogTitle
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              px: 1.8,
-              pb: 1.5,
-            }}
-          >
-            <CloseOutlined onClick={onClose} color="error" />
-          </DialogTitle>
-          <Divider />
-          <DialogContent>
-            <TextField
-              type="text"
-              margin="dense"
-              name="stock"
-              label="Product Quantity"
-              variant="outlined"
-              fullWidth
-              value={stock}
-              helperText="*Please enter only digits"
-              onChange={({ target }) => {
-                const value = target.value;
-                if (/^\d*$/.test(value)) {
-                  setStock(value);
-                  setLoading(value === "");
-                }
-              }}
-              inputProps={{
-                inputMode: "numeric",
-                pattern: "[0-9]*",
-              }}
-            />
-            <TextField
-              type="text"
-              margin="dense"
-              name="stockUnit"
-              label="Product Unit"
-              variant="outlined"
-              fullWidth
-              value={stockUnit}
-              helperText="*example: Piece, Unit, Pair, Item, Dozen, Box, Pack, Bag, Carton, Pair, Kilogram, Liter, Meter"
-              onChange={({ target }) => {
-                const value = target.value;
-                setStockUnit(value);
+    <Dialog open={open} maxWidth="xs">
+      <form onSubmit={handleSubmit}>
+        <DialogTitle
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            px: 1.8,
+            pb: 1.5,
+          }}
+        >
+          <CloseOutlined onClick={onClose} color="error" />
+        </DialogTitle>
+        <Divider />
+        <DialogContent>
+          <TextField
+            type="text"
+            margin="dense"
+            name="stock"
+            label="Product Quantity"
+            variant="outlined"
+            fullWidth
+            value={stock}
+            helperText="*Please enter only digits"
+            onChange={({ target }) => {
+              const value = target.value;
+              if (/^\d*$/.test(value)) {
+                setStock(value);
                 setLoading(value === "");
-              }}
-            />
-            {apiError && <ApiError apiError={apiError} />}
-          </DialogContent>
+              }
+            }}
+            inputProps={{
+              inputMode: "numeric",
+              pattern: "[0-9]*",
+            }}
+          />
+          <TextField
+            type="text"
+            margin="dense"
+            name="stockUnit"
+            label="Product Unit"
+            variant="outlined"
+            fullWidth
+            value={stockUnit}
+            helperText="*example: Piece, Unit, Pair, Item, Dozen, Box, Pack, Bag, Carton, Pair, Kilogram, Liter, Meter"
+            onChange={({ target }) => {
+              const value = target.value;
+              setStockUnit(value);
+              setLoading(value === "");
+            }}
+          />
+          {apiError && <ApiError apiError={apiError} />}
+        </DialogContent>
 
-          <DialogActions style={{ padding: "0 25px 20px 20px" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              disabled={loading}
-            >
-              Add Product Quantity to stock
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
-    </>
+        <DialogActions style={{ padding: "0 25px 20px 20px" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            disabled={loading}
+          >
+            Add Product Quantity to stock
+          </Button>
+        </DialogActions>
+      </form>
+    </Dialog>
   );
 };
 
