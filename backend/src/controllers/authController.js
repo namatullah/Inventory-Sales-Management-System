@@ -57,12 +57,38 @@ const signup = async (req, res) => {
 };
 const me = async (req, res) => {
   try {
-    const decoded = verifyToken(req.query.token);
-    const user = await User.findById(decoded.id).select("-password");
+    const user = await User.findById(req.params.id).select("-password");
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+const updateProfile = async (req, res) => {
+  const { name, email } = req.body;
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(400).json({ message: "The user is not found" });
+    }
+    user.name = name;
+    user.email = email;
+    user.save();
 
-export { signin, signup, me };
+    res
+      .status(200)
+      .json({
+        message: "Your profile updated successfully",
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          token: generateToken(user._id),
+        },
+      });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export { signin, signup, me, updateProfile };

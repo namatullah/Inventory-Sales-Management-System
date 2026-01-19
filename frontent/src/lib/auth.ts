@@ -9,3 +9,7 @@ export const me = (token: string | any) =>
       token,
     },
   });
+export const updateUser = (
+  id: string | any,
+  data: { name: string; email: string }
+) => api.put("/auth/" + id, data);

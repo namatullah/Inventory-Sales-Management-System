@@ -16,6 +16,7 @@ interface AuthContextType {
   logout: () => void;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  setUserProfile: (data: UserType) => Promise<any>;
 }
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -78,6 +79,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     navigate("/signin");
   };
+  const setUserProfile = (userData: UserType) => {
+    setUser(userData);
+  };
   const value = {
     user,
     login,
@@ -86,6 +90,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     loading,
     isAdmin: user?.role === "admin",
     isAuthenticated: !!user,
+    setUserProfile,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

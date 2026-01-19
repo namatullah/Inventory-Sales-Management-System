@@ -10,7 +10,7 @@ import { drawerWidth } from "./DrawerNavigation";
 import { useAuth } from "../../../context/AuthContext";
 import { Button } from "@mui/material";
 import { useState } from "react";
-import Profile from "../../auth/Profile";
+import Profile from "../../pages/profile/Profile";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
