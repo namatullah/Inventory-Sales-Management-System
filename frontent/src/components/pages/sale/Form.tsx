@@ -23,6 +23,7 @@ import type { ProductType } from "../../../helpers/types";
 import { useAuth } from "../../../context/AuthContext";
 import ApiError from "../../common/ApiError";
 import { createSales } from "../../../lib/sale";
+import { CURRENCY } from "../../../helpers/helper";
 
 const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const { user } = useAuth();
@@ -197,7 +198,7 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                               value={product._id}
                               disabled={isSelected}
                             >
-                              {product.name} (${product.price})
+                              {product.name} ({product.price} {CURRENCY})
                             </MenuItem>
                           );
                         })}
@@ -268,7 +269,7 @@ const Form = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
                     <AddOutlined onClick={addRow} color="primary" />
                   </TableCell>
                   <TableCell sx={{ fontSize: "16px" }}>
-                    Grand Total: {grandTotal.toFixed(2)} Af
+                    Grand Total: {grandTotal.toFixed(2)} {CURRENCY}
                   </TableCell>
                 </TableRow>
               </TableBody>

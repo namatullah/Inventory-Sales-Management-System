@@ -18,7 +18,7 @@ interface AuthContextType {
   isAdmin: boolean;
   setUserProfile: (data: UserType) => Promise<any>;
 }
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | any>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
@@ -28,16 +28,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const checkAuthStatus = async () => {
     try {
       const token = localStorage.getItem("token");
+
       if (!token) {
         setUser(null);
+        setLoading(false);
         return;
       }
-      const { data } = await me(token);
+
+      const { data } = await me();
       setUser(data);
     } catch (error) {
-      console.error("Auth check failed");
-      setUser(null);
       localStorage.removeItem("token");
+      setUser(null);
+      navigate("/signin"); 
     } finally {
       setLoading(false);
     }

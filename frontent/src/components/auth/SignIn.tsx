@@ -38,10 +38,6 @@ const SignIn = () => {
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
 
-  const switchMode = () => {
-    setShowPassword(false);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: typeof errors = {};
@@ -98,7 +94,7 @@ const SignIn = () => {
             name="email"
             label="Email"
             onChange={handleChange}
-            type="email"
+            type="text"
             variant="outlined"
             fullWidth
             error={!!errors.email}
@@ -140,7 +136,28 @@ const SignIn = () => {
           >
             Sign In
           </Button>
-          {apiError && <ApiError apiError={apiError} />}
+          {apiError && (
+            <>
+              <ApiError apiError={apiError} />
+              <Typography
+                variant="body2"
+                sx={{
+                  my: 2,
+                  textAlign: "right",
+                  cursor: "pointer",
+                  color: "primary.main",
+                  fontSize: "0.75rem",
+                  textDecoration: "underline",
+                  "&:hover": {
+                    color: "primary.dark",
+                  },
+                }}
+                onClick={() => navigate("/forgotpassword")}
+              >
+                Forgot password?
+              </Typography>
+            </>
+          )}
           <Grid>
             <Button onClick={() => navigate("/signup")}>
               Don't have an account? Sign Up

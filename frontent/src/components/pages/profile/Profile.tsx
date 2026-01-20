@@ -36,7 +36,7 @@ const Profile = ({
         <ChangePassword
           open={openChangePassword}
           setOpenChangePassword={setOpenChangePassword}
-          user={user}
+          id={user?._id}
         />
       )}
       <Dialog open={open} maxWidth="xs" fullWidth>

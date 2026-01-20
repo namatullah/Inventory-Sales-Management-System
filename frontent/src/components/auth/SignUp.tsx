@@ -43,10 +43,6 @@ const SignUp = () => {
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
 
-  const switchMode = () => {
-    setShowPassword(false);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: typeof errors = {};
@@ -125,7 +121,7 @@ const SignUp = () => {
             name="email"
             label="Email"
             onChange={handleChange}
-            type="email"
+            type="text"
             variant="outlined"
             fullWidth
             error={!!errors.email}

@@ -22,7 +22,7 @@ import type {
   SaleItemType,
   SaleType,
 } from "../../../helpers/types";
-import { PAGINATION } from "../../../helpers/helper";
+import { CURRENCY, PAGINATION } from "../../../helpers/helper";
 import View from "./View";
 const Sales = () => {
   const [open, setOpen] = useState(false);
@@ -138,7 +138,7 @@ const Sales = () => {
                 <TableCell>
                   <Items items={sale.items} />
                 </TableCell>
-                <TableCell>{sale.totalAmount} Af</TableCell>
+                <TableCell>{sale.totalAmount} {CURRENCY}</TableCell>
                 <TableCell>
                   <Button
                     size="small"

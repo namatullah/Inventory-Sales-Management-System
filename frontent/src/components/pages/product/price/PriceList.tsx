@@ -23,6 +23,7 @@ import {
   usePricesDispatchContext,
 } from "./contextReducer/PriceContexts";
 import toast from "react-hot-toast";
+import { CURRENCY } from "../../../../helpers/helper";
 
 const PriceList = ({
   pricePreview,
@@ -125,7 +126,7 @@ const PriceList = ({
                     }
                   >
                     <ListItemText
-                      primary={price?.price + " Af"}
+                      primary={price?.price + " " + CURRENCY}
                       secondary={moment(price.createdAt).format(
                         "MMMM Do YYYY, h:mm:ss a"
                       )}

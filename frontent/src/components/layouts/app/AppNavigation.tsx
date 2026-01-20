@@ -76,9 +76,11 @@ const AppNavigation = ({ open, handleDrawerOpen }: any) => {
             Hello,
             <Button
               size="small"
-              variant="outlined"
               onClick={() => setOpenProfile(true)}
-              sx={{ color: "white" }}
+              sx={{
+                color: "white",
+                textTransform: "none",
+              }}
             >
               {user?.name || user?.email}
             </Button>

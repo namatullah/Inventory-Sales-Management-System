@@ -11,6 +11,7 @@ import {
 import type { SaleItemType } from "../../../helpers/types";
 import { CloseOutlined } from "@mui/icons-material";
 import { Fragment } from "react/jsx-runtime";
+import { CURRENCY } from "../../../helpers/helper";
 
 const View = ({
   open,
@@ -42,7 +43,7 @@ const View = ({
                 <ListItem>
                   <ListItemText
                     primary={item.productId.name}
-                    secondary={`${item.quantity} ${item.productId.stockUnit}  --> ${item.priceAtSale} Af`}
+                    secondary={`${item.quantity} ${item.productId.stockUnit}  --> ${item.priceAtSale} ${CURRENCY}`}
                     primaryTypographyProps={{
                       sx: { alignContent: "center" },
                     }}

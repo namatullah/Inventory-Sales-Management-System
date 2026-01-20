@@ -10,7 +10,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import type { UserType } from "../../../helpers/types";
 import { CloseOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import ApiError from "../../common/ApiError";
@@ -21,11 +20,11 @@ import toast from "react-hot-toast";
 const ChangePassword = ({
   open,
   setOpenChangePassword,
-  user,
+  id,
 }: {
   open: boolean;
   setOpenChangePassword: React.Dispatch<React.SetStateAction<boolean>>;
-  user: UserType | null;
+  id: string;
 }) => {
   const { logout } = useAuth();
   const [password, setPassword] = useState<string>("");
@@ -39,7 +38,7 @@ const ChangePassword = ({
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const { data } = await changePassword(user?._id, { password });
+      const { data } = await changePassword(id, { password });
       toast.success(data.message);
       logout();
       setOpenChangePassword(false);

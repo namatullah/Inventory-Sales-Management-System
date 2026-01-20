@@ -82,3 +82,4 @@ export const USER_ROLE = {
   ADMIN: "admin",
   STAFF: "staff",
 };
+export const CURRENCY = "Af";

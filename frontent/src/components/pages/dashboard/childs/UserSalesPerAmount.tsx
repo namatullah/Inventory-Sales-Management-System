@@ -21,7 +21,6 @@ const UserSalesPerAmount = ({
   const fetchUserQuantitySale = async () => {
     try {
       const { data } = await getUserSalesPerAmount();
-      console.log(data);
       const chartData = data.map((item: any) => ({
         name: item.sellerName,
         value: item.totalAmount,

@@ -11,6 +11,7 @@ import Users from "./components/pages/users/Users";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/layouts/ProtectedRoutes";
+import ForgotPassword from "./components/auth/ForgotPassword";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
           <Route element={<AuthLayout />}>
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
           </Route>
         </Routes>
         <Toaster
