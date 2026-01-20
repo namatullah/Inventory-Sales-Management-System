@@ -9,7 +9,7 @@ const signin = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-    const passwordMatch = verifyPassword(password, user.password);
+    const passwordMatch = await verifyPassword(password, user.password);
     if (!passwordMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
@@ -106,4 +106,19 @@ const changePassword = async (req, res) => {
   }
 };
 
-export { signin, signup, me, updateProfile, changePassword };
+const verifiyingEmail = async (req, res) => {
+  const { email } = req.query;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "No user registered with this email" });
+    }
+    res.status(200).json({id:user._id});
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export { signin, signup, me, updateProfile, changePassword, verifiyingEmail };
