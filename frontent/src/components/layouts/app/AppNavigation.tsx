@@ -73,7 +73,6 @@ const AppNavigation = ({ open, handleDrawerOpen }: any) => {
             </Typography>
           </span>
           <span>
-            Hello,
             <Button
               size="small"
               onClick={() => setOpenProfile(true)}
@@ -82,7 +81,7 @@ const AppNavigation = ({ open, handleDrawerOpen }: any) => {
                 textTransform: "none",
               }}
             >
-              {user?.name || user?.email}
+              Hello, {user?.name || user?.email}
             </Button>
           </span>
         </Toolbar>
